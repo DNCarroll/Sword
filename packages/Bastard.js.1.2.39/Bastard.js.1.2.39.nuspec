@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Bastard.js</id>
+    <version>1.2.39</version>
+    <title>Bastard.js - binding and ajax javascript files</title>
+    <authors>Nathan Carroll</authors>
+    <owners>Nathan Carroll</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Binding and Ajax javascript files.</description>
+    <summary>Bastard is a binding and ajax javascript library.  The name evolved from an in house ado.net framework called Sword.</summary>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="Sword.dll" version="1.0.6" />
+      <dependency id="Newtonsoft.Json" version="6.0.1" />
+    </dependencies>
+  </metadata>
+</package>
