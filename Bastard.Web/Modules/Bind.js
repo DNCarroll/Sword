@@ -1185,7 +1185,7 @@ var Binding;
             var async = function () {
                 if (document.body.contains(unorderedList) && unorderedList.DataObject && unorderedList.DataObject.length > 0 && unorderedList.DataObject.length > unorderedList.AsyncPosition) {
                     var listitem = unorderedList.children[unorderedList.AsyncPosition];
-                    Binding.AsynchSubExecute(listitem, unorderedList.Wrapper, unorderedList.DataObject[unorderedList.AsyncPosition], unorderedList);
+                    AsynchSubExecute(listitem, unorderedList.Wrapper, unorderedList.DataObject[unorderedList.AsyncPosition], unorderedList);
                     unorderedList.AsyncPosition = unorderedList.AsyncPosition + 1;
                     if (unorderedList.AsyncPosition < unorderedList.DataObject.length) {
                         setTimeout(async, 0);

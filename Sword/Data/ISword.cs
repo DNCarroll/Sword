@@ -65,6 +65,20 @@ namespace Sword
     public abstract class SwordObject : IDynamic, ISwordState
     {
 
+        public void SetSerializableAndNotSerializable(out string[] serializable, out string[] notSerializable)
+        {
+            var ret = new List<string>();
+            var staticSerializable = SerializableProperties();            
+            ret.AddRange(staticSerializable);
+            serializable = ret.ToArray();
+            notSerializable = GetStaticallyTypedPropertyNames().Where(s => !staticSerializable.Contains(s)).ToArray();
+        }
+
+        public virtual Type GetPropertyType(string field)
+        {
+            return null;
+        }
+
         public virtual void SetValues(object[] values, Dictionary<string, MapPoint> map) { }
         //public virtual void SetValue(string propertyName, byte[] value)
         //{

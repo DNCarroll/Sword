@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Dynamic;
@@ -23,15 +24,29 @@ namespace Sword
         string Table { get; }
         string ObjectConnectionString { get; }
         string[] TableFields();
-        string[] SerializableProperties();
-        //Dynamic objects are serialized as JSON objects. 
-        //A property is written for every member name returned by DynamicMetaObject.GetDynamicMemberNames().
+        string[] SerializableProperties();        
+        void SetSerializableAndNotSerializable(out string[] serializable, out string[] notSerializable);
+        Type GetPropertyType(string propertyName);
         IEnumerable<string> GetDynamicMemberNames();        
     }
 
     public abstract class SwordAbstract : DynamicObject, IDynamic
     {
 
+        public void SetSerializableAndNotSerializable(out string[] serializable, out string[] notSerializable)
+        {
+            var ret = new List<string>();
+            var staticSerializable = SerializableProperties();
+            ret.AddRange(dictionary.Keys.ToArray());
+            ret.AddRange(staticSerializable);
+            serializable = ret.ToArray();
+            notSerializable = GetStaticallyTypedPropertyNames().Where(s => !staticSerializable.Contains(s)).ToArray();
+        }
+
+        public virtual Type GetPropertyType(string field)
+        {
+            return null;
+        }
 
         public virtual string[] TableFields()
         {
@@ -256,7 +271,6 @@ namespace Sword
             }
         }
 
-
         public void Dispose()
         {
             var props = this.PropertyNames();
@@ -267,6 +281,130 @@ namespace Sword
                 {
                     this[item] = null;
                 }
+            }
+        }
+    }
+
+
+    public class DynamicSwordConverter : JsonConverter
+    {
+
+        public override bool CanConvert(Type objectType)
+        {
+            return objectType.BaseType == typeof(DynamicSword);
+        }
+
+        public override object ReadJson(JsonReader reader,
+                                        Type objectType,
+                                         object existingValue,
+                                         JsonSerializer serializer)
+        {
+            var newObject = constructObject(objectType);
+            JObject jObject = JObject.Load(reader);
+            if (newObject is DynamicSword)
+            {
+                var ds = (DynamicSword)newObject;
+                hydrate(jObject, ds);
+            }
+            else
+            {
+                //do something different?
+                //really shoulnt be in here anyways
+            }
+            return newObject;
+        }
+
+        object constructObject(Type type)
+        {
+            ConstructorInfo magicConstructor = type.GetConstructor(Type.EmptyTypes);
+            return magicConstructor.Invoke(new object[] { });
+        }
+
+        void hydrate(JObject jObject, DynamicSword obj)
+        {
+            string[] serializable;
+            string[] notSerializable;
+            obj.SetSerializableAndNotSerializable(out serializable, out notSerializable);
+            foreach (KeyValuePair<string, JToken> item in jObject)
+            {
+                if (serializable.Contains(item.Key))
+                {
+                    var type = obj.GetPropertyType(item.Key);
+                    if (type != null)
+                    {
+                        if (type.IsValueType || type == typeof(string))
+                        {
+                            obj[item.Key] = item.Value;
+                        }
+                        else if (type.BaseType == typeof(DynamicSword) && item.Value is JObject)
+                        {
+                            var childJObject = (JObject)item.Value;
+                            if (obj[item.Key] == null)
+                            {
+                                obj[item.Key] = constructObject(type);
+                            }
+                            hydrate(childJObject, (DynamicSword)obj[item.Key]);
+                        }
+                        else
+                        {
+                            obj[item.Key] = constructObject(type);
+                            if (obj[item.Key] != null)
+                            {
+                                if (obj[item.Key] is IList && item.Value is JArray && type.IsGenericType)
+                                {
+                                    var jArray = ((JArray)item.Value).Children();
+                                    var list = (IList)obj[item.Key];
+                                    Type subType = list.GetType().GetGenericArguments()[0];
+                                    var isDynamicSword = subType.BaseType == typeof(DynamicSword);
+                                    if (isDynamicSword)
+                                    {
+                                        foreach (var subItem in jArray)
+                                        {
+                                            if (subItem is JObject)
+                                            {
+                                                var newSubObject = (DynamicSword)constructObject(subType);
+                                                hydrate((JObject)subItem, newSubObject);
+                                                list.Add(newSubObject);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (!notSerializable.Contains(item.Key))
+                {
+                    obj[item.Key] = item.Value;
+                }
+            }
+        }
+
+        public override void WriteJson(JsonWriter writer,
+                                       object value,
+                                       JsonSerializer serializer)
+        {
+            if (value is DynamicSword)
+            {
+                var ds = (DynamicSword)value;
+                string[] serializable;
+                string[] notSerializable;
+                ds.SetSerializableAndNotSerializable(out serializable, out notSerializable);
+                var jobject = new JObject();
+                foreach (var item in serializable)
+                {
+                    var tempValue = ds[item];
+                    if (tempValue != null)
+                    {
+                        jobject.Add(item, JToken.FromObject(tempValue));
+                    }
+                }
+                jobject.WriteTo(writer);
+            }
+            else
+            {
+                JToken t = JToken.FromObject(value);
+                t.WriteTo(writer);
             }
         }
     }
