@@ -285,7 +285,7 @@ namespace Sword
         }
     }
 
-
+    //update with try catches etc
     public class DynamicSwordConverter : JsonConverter
     {
 
@@ -294,117 +294,151 @@ namespace Sword
             return objectType.BaseType == typeof(DynamicSword);
         }
 
-        public override object ReadJson(JsonReader reader,
-                                        Type objectType,
-                                         object existingValue,
-                                         JsonSerializer serializer)
+        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var newObject = constructObject(objectType);
-            JObject jObject = JObject.Load(reader);
-            if (newObject is DynamicSword)
+            object newObject = null;
+            if (objectType.BaseType == typeof(DynamicSword))
             {
-                var ds = (DynamicSword)newObject;
-                hydrate(jObject, ds);
+                newObject = constructObject(objectType);
+                if (newObject != null)
+                {
+                    JObject jObject = JObject.Load(reader);
+                    var ds = (DynamicSword)newObject;
+                    hydrate(jObject, ds);
+                }
             }
             else
             {
-                //do something different?
-                //really shoulnt be in here anyways
+                newObject = serializer.Deserialize(reader);
             }
             return newObject;
         }
 
         object constructObject(Type type)
         {
-            ConstructorInfo magicConstructor = type.GetConstructor(Type.EmptyTypes);
-            return magicConstructor.Invoke(new object[] { });
+            try
+            {
+                ConstructorInfo magicConstructor = type.GetConstructor(Type.EmptyTypes);
+                return magicConstructor.Invoke(new object[] { });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
 
         void hydrate(JObject jObject, DynamicSword obj)
         {
-            string[] serializable;
-            string[] notSerializable;
-            obj.SetSerializableAndNotSerializable(out serializable, out notSerializable);
-            foreach (KeyValuePair<string, JToken> item in jObject)
+            if (obj != null)
             {
-                if (serializable.Contains(item.Key))
+                string[] serializable;
+                string[] notSerializable;
+                obj.SetSerializableAndNotSerializable(out serializable, out notSerializable);
+                foreach (KeyValuePair<string, JToken> item in jObject)
                 {
-                    var type = obj.GetPropertyType(item.Key);
-                    if (type != null)
+                    try
                     {
-                        if (type.IsValueType || type == typeof(string))
+                        if (serializable.Contains(item.Key))
                         {
-                            obj[item.Key] = item.Value;
-                        }
-                        else if (type.BaseType == typeof(DynamicSword) && item.Value is JObject)
-                        {
-                            var childJObject = (JObject)item.Value;
-                            if (obj[item.Key] == null)
+                            var type = obj.GetPropertyType(item.Key);
+                            if (type != null)
                             {
-                                obj[item.Key] = constructObject(type);
-                            }
-                            hydrate(childJObject, (DynamicSword)obj[item.Key]);
-                        }
-                        else
-                        {
-                            obj[item.Key] = constructObject(type);
-                            if (obj[item.Key] != null)
-                            {
-                                if (obj[item.Key] is IList && item.Value is JArray && type.IsGenericType)
+                                if (type.IsValueType || type == typeof(string))
                                 {
-                                    var jArray = ((JArray)item.Value).Children();
-                                    var list = (IList)obj[item.Key];
-                                    Type subType = list.GetType().GetGenericArguments()[0];
-                                    var isDynamicSword = subType.BaseType == typeof(DynamicSword);
-                                    if (isDynamicSword)
+                                    obj[item.Key] = item.Value;
+                                }
+                                else if (type.BaseType == typeof(DynamicSword) && item.Value is JObject)
+                                {
+                                    var childJObject = (JObject)item.Value;
+                                    if (obj[item.Key] == null)
                                     {
-                                        foreach (var subItem in jArray)
+                                        obj[item.Key] = constructObject(type);
+                                    }
+                                    hydrate(childJObject, (DynamicSword)obj[item.Key]);
+                                }
+                                else if (item.Value is JObject)
+                                {
+                                    JsonSerializer serializer = new JsonSerializer();
+                                    obj[item.Key] = serializer.Deserialize(new JTokenReader(item.Value), type);
+                                }
+                                else
+                                {
+                                    obj[item.Key] = constructObject(type);
+                                    if (obj[item.Key] != null)
+                                    {
+                                        if (obj[item.Key] is IList && item.Value is JArray && type.IsGenericType)
                                         {
-                                            if (subItem is JObject)
+                                            var jArray = ((JArray)item.Value).Children();
+                                            var list = (IList)obj[item.Key];
+                                            Type subType = list.GetType().GetGenericArguments()[0];
+                                            var isDynamicSword = subType.BaseType == typeof(DynamicSword);
+                                            if (isDynamicSword)
                                             {
-                                                var newSubObject = (DynamicSword)constructObject(subType);
-                                                hydrate((JObject)subItem, newSubObject);
-                                                list.Add(newSubObject);
+                                                foreach (var subItem in jArray)
+                                                {
+                                                    if (subItem is JObject)
+                                                    {
+                                                        var newSubObject = (DynamicSword)constructObject(subType);
+                                                        hydrate((JObject)subItem, newSubObject);
+                                                        list.Add(newSubObject);
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                JsonSerializer serializer = new JsonSerializer();
+                                                obj[item.Key] = serializer.Deserialize(new JTokenReader(item.Value), type);
                                             }
                                         }
                                     }
                                 }
                             }
                         }
+                        else if (!notSerializable.Contains(item.Key))
+                        {
+                            obj[item.Key] = item.Value;
+                        }
                     }
-                }
-                else if (!notSerializable.Contains(item.Key))
-                {
-                    obj[item.Key] = item.Value;
+                    catch (Exception)
+                    {
+                        throw;
+                    }
                 }
             }
         }
 
-        public override void WriteJson(JsonWriter writer,
-                                       object value,
-                                       JsonSerializer serializer)
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value is DynamicSword)
+            try
             {
-                var ds = (DynamicSword)value;
-                string[] serializable;
-                string[] notSerializable;
-                ds.SetSerializableAndNotSerializable(out serializable, out notSerializable);
-                var jobject = new JObject();
-                foreach (var item in serializable)
+                if (value is DynamicSword)
                 {
-                    var tempValue = ds[item];
-                    if (tempValue != null)
+                    var ds = (DynamicSword)value;
+                    string[] serializable;
+                    string[] notSerializable;
+                    ds.SetSerializableAndNotSerializable(out serializable, out notSerializable);
+                    var jobject = new JObject();
+                    foreach (var item in serializable)
                     {
-                        jobject.Add(item, JToken.FromObject(tempValue));
+                        var tempValue = ds[item];
+                        if (tempValue != null)
+                        {
+                            jobject.Add(item, JToken.FromObject(tempValue));
+                        }
                     }
+                    jobject.WriteTo(writer);
                 }
-                jobject.WriteTo(writer);
+                else
+                {
+                    JToken t = JToken.FromObject(value);
+                    t.WriteTo(writer);
+                }
             }
-            else
+            catch (Exception)
             {
-                JToken t = JToken.FromObject(value);
-                t.WriteTo(writer);
+
+                throw;
             }
         }
     }
