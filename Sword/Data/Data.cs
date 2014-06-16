@@ -1128,7 +1128,7 @@ namespace Sword
             {
                 throw;
             }
-            return resultSet;
+            return resultSet.ToArray();
         }
 
 		public static void FillResultSet<P>(this P parameters, IResultSet[] objectReferences, d.IDbCommand command)
