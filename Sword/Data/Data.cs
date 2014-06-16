@@ -1081,6 +1081,56 @@ namespace Sword
 
 		}
 
+        public static IResultSet<DynamicSword>[] GetResultSet<P>(this P parameters, d.IDbCommand command)
+            where P : DynamicSword, new()
+        {
+            List<IResultSet<DynamicSword>> resultSet = new List<IResultSet<DynamicSword>>();
+            try
+            {   
+                setParameter(parameters, command);
+                if (command.Connection.State == System.Data.ConnectionState.Closed)
+                {
+                    command.CommandTimeout = Timeout;
+                    command.Connection.Open();
+                }
+                if (command.Connection.State == System.Data.ConnectionState.Open)
+                {
+                    try
+                    {
+                        using (d.IDataReader reader = command.ExecuteReader())
+                        {
+                            var next = true;
+                            while (next)
+                            {
+                                int fieldCount = reader.FieldCount;
+                                var obj = new IResultSet<DynamicSword>();
+                                resultSet.Add(obj);
+                                obj.FillData(reader);
+                                next = reader.NextResult();
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                        throw;
+                    }
+                    finally
+                    {
+                        command.Connection.Close();
+                    }
+                }
+
+                setOutputParameters(parameters, command);
+                //   AcceptChanges(parameters);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return resultSet;
+        }
+
 		public static void FillResultSet<P>(this P parameters, IResultSet[] objectReferences, d.IDbCommand command)
 			where P : DynamicSword, new()
 		{
