@@ -930,8 +930,21 @@ namespace Sword
 					};
 					if (commandText.ToLower().Substring(0, 6) != "select")
 					{
-						sqlCommand.CommandType =
-							(new d.SqlClient.SqlCommand { CommandText = "select ROUTINE_NAME from INFORMATION_SCHEMA.ROUTINES r where r.ROUTINE_NAME = '" + commandText + "'", Connection = conn }).FirstOrDefault() == null ? d.CommandType.Text : d.CommandType.StoredProcedure;
+                        sqlCommand.CommandType = d.CommandType.StoredProcedure;
+
+                        //if (commandText.IndexOf(".") > -1)
+                        //{
+                        //    var split = commandText.Split(new string[] { "." }, StringSplitOptions.None);
+                        //    var schema = split[0];
+                        //    var text = split[1];
+                        //    sqlCommand.CommandType =
+                        //        (new d.SqlClient.SqlCommand { CommandText = "SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES r WHERE ROUTINE_SCHEMA = '" + Marketers' AND ROUTINE_NAME = '" + UpdateMarketer + "'", Connection = conn }).FirstOrDefault() == null ? d.CommandType.Text : d.CommandType.StoredProcedure;
+                        //}
+                        //else
+                        //{
+                        //    sqlCommand.CommandType =
+                        //        (new d.SqlClient.SqlCommand { CommandText = "select ROUTINE_NAME from INFORMATION_SCHEMA.ROUTINES r where r.ROUTINE_NAME = '" + commandText + "'", Connection = conn }).FirstOrDefault() == null ? d.CommandType.Text : d.CommandType.StoredProcedure;
+                        //}
 					}
 
 					if (sqlCommand.CommandType == d.CommandType.StoredProcedure)
