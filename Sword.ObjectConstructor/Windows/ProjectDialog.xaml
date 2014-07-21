@@ -1,0 +1,23 @@
+﻿<Window x:Class="Sword.ObjectConstructor.Windows.ProjectDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="ProjectDialog" Height="300" Width="400" ShowInTaskbar="False" Topmost="True" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button Width="160" HorizontalAlignment="Center" Content="Edit Project" VerticalAlignment="Center" Click="editProject_Click" Height="26"></Button>
+        <Button Width="160" HorizontalAlignment="Center" Content="Objects" VerticalAlignment="Center" Grid.Row="1" Click="objects_Click" Height="26"></Button>
+        <Button Width="160" HorizontalAlignment="Center" Content="Enums" VerticalAlignment="Center" Grid.Row="2" Click="enums_Click" Height="26"></Button>
+        <Button Width="160" HorizontalAlignment="Center" Content="Connection Strings" VerticalAlignment="Center" Grid.Row="3" Click="connectionStrings_Click" Height="26"></Button>
+        <Button Width="160" HorizontalAlignment="Center" Content="C# Full Object Code" VerticalAlignment="Center" Grid.Row="4" Click="cSharp_Click" Height="26"></Button>
+        <Button Width="160" HorizontalAlignment="Center" Content="C# Portable Object Code" VerticalAlignment="Center" Grid.Row="5" Click="cSharpPortable_Click" Height="26"></Button>
+        <Button Width="160" HorizontalAlignment="Center" Content="TypeScript" VerticalAlignment="Center" Grid.Row="6" Click="typeScript_Click" Height="26"></Button>
+    </Grid>
+</Window>
