@@ -1,4 +1,4 @@
-/// <reference path="../Modules/Is.ts"/>
+﻿/// <reference path="../Modules/Is.ts"/>
 HTMLSelectElement.prototype.AddOptions = function (arrayOrObject, valueProperty, displayProperty, selectedValue) {
     var select = this;
     if (Is.Array(arrayOrObject)) {
@@ -11,7 +11,7 @@ HTMLSelectElement.prototype.AddOptions = function (arrayOrObject, valueProperty,
                     select["options"][select.options.length - 1].selected = "true";
                 }
             }
-        } else if (this.length > 1 && Is.String(this[0])) {
+        } else if (tempArray.length > 1 && Is.String(tempArray[0])) {
             for (var i = 0; i < tempArray.length; i++) {
                 var item = tempArray[i];
                 select["options"][select.options.length] = new Option(item, item);

@@ -17,7 +17,7 @@ HTMLSelectElement.prototype.AddOptions= function(arrayOrObject, valueProperty ? 
                 }
             }
         }
-        else if (this.length > 1 && Is.String(this[0])) {            
+        else if (tempArray.length > 1 && Is.String(tempArray[0])) {
             for (var i = 0; i < tempArray.length; i++) {
                 var item = tempArray[i];
                 select["options"][select.options.length] = new Option(item, item);

@@ -941,8 +941,11 @@ var Binding;
                     return o.Name == Binding.Attributes.DataSource;
                 });
                 var dataObject = new Function("return " + dataSource.Value + ";");
-
-                select.AddOptions(dataObject(), vm.Value, dm.Value, selectedValue);
+                if (vm != null && dm != null) {
+                    select.AddOptions(dataObject(), vm.Value, dm.Value, selectedValue);
+                } else {
+                    select.AddOptions(dataObject(), null, null, selectedValue);
+                }
             } else if (attributes.First(function (o) {
                 return o.Name == Binding.Attributes.ObjectSource;
             })) {
