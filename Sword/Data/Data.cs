@@ -2154,7 +2154,6 @@ namespace Sword
 
 	}
 
-
 	public interface IReaderCache<T>
 		where T : IDynamic
 	{

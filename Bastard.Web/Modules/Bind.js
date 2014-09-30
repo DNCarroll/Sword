@@ -1276,6 +1276,9 @@ var Binding;
                                 }
                             }
                         }
+                        if (wrapper.UpdateEvent != null) {
+                            wrapper.UpdateEvent(newObject, 0 /* Insert */, null);
+                        }
                         wrapper.WebApi.Insert(newObject, function (result) {
                             if (listItem["InsertPosition"] && listItem["InsertPosition"] == "top") {
                             } else {

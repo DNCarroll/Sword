@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sword", "Sword\Sword.csproj", "{191CADB1-D8DE-4764-A307-540063816B10}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sword.Portable", "Sword.Portable\Sword.Portable.csproj", "{7922C3CC-6501-4BFE-B01D-4BBEC2182AA0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sword.ObjectConstructor", "Sword.ObjectConstructor\Sword.ObjectConstructor.csproj", "{CDB43641-2665-4FD1-B959-F8CBE8E00A7E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sword.Test", "Sword.Test\Sword.Test.csproj", "{BA9BF894-9B14-4B39-BC66-31BD07540B08}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,16 @@ Global
 		{CDB43641-2665-4FD1-B959-F8CBE8E00A7E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{CDB43641-2665-4FD1-B959-F8CBE8E00A7E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CDB43641-2665-4FD1-B959-F8CBE8E00A7E}.Release|x86.ActiveCfg = Release|Any CPU
+		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

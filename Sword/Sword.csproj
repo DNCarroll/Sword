@@ -74,6 +74,7 @@
     <Compile Include="Serialization\Delim.cs" />
     <Compile Include="Serialization\Json.cs" />
     <Compile Include="Serialization\Xml.cs" />
+    <Compile Include="TestList.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
