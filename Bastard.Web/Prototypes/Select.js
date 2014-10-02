@@ -1,4 +1,4 @@
-﻿/// <reference path="../Modules/Is.ts"/>
+/// <reference path="../Modules/Is.ts"/>
 HTMLSelectElement.prototype.AddOptions = function (arrayOrObject, valueProperty, displayProperty, selectedValue) {
     var select = this;
     if (Is.Array(arrayOrObject)) {

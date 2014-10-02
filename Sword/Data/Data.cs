@@ -41,12 +41,85 @@ namespace Sword
 				}
 			}
 		}
-				
-				
 
-		#region Internal Methods
+        #region Regular Expression and Sql Command
+        
+        public static bool TrySetSqlCommandParameterValues(this System.Text.RegularExpressions.Regex regex,
+            string source,
+            d.IDbCommand command,
+            Func<string, object> notFoundInRegexGroups,
+            Func<string, object> regexGroupFoundButNull)
+        {
+            var match = regex.Match(source);
+            if (match.Success)
+            {
+                foreach (d.IDbDataParameter item in command.Parameters)
+                {
+                    item.Value = DBNull.Value;
+                    var group = match.Groups[item.SourceColumn];
+                    if (group != null)
+                    {
+                        if (!string.IsNullOrEmpty(group.Value))
+                        {
+                            item.Value = group.Value;
+                        }
+                        else if (regexGroupFoundButNull != null)
+                        {
+                            var value = regexGroupFoundButNull(item.SourceColumn);
+                            if (value != null)
+                            {
+                                item.Value = value;
+                            }
+                        }
+                    }
+                    else if (notFoundInRegexGroups != null)
+                    {
+                        var value = notFoundInRegexGroups(item.SourceColumn);
+                        if (value != null)
+                        {
+                            item.Value = value;
+                        }
+                    }
+                }
+                return true;
+            }
+            return false;
+        }
 
-		public static void setByCast(d.IDbDataParameter parameter, object value)
+        public static void ExecuteWithRegex(this d.IDbCommand command, string source, System.Text.RegularExpressions.Regex regex,
+            Func<string, object> notFoundInRegexGroups = null,
+            Func<string, object> regexGroupFoundButNull = null)
+        {
+            if (regex.TrySetSqlCommandParameterValues(source, command, notFoundInRegexGroups, regexGroupFoundButNull))
+            {
+                try
+                {
+                    if (command.Connection.State != d.ConnectionState.Open)
+                    {
+                        command.Connection.Open();
+                    }
+                    command.ExecuteNonQuery();
+                    command.Connection.Close();
+                }
+                catch (Exception ex)
+                {
+                    string formatted = string.Format("Execution of 'ExecuteWithRegex' SqlCommand:{0}, ErrorMessage:{1}", command.CommandText, ex.Message);
+                    throw new Exception(formatted);
+                }
+
+            }
+            else
+            {
+                string formatted = string.Format("Failed to 'ExecuteWithRegex' SqlCommand:{0}", command.CommandText);
+                throw new Exception(formatted);
+            }
+        }
+
+        #endregion
+
+        #region Internal Methods
+
+        public static void setByCast(d.IDbDataParameter parameter, object value)
 		{            
 	 
 			switch (parameter.DbType)
