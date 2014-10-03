@@ -1,0 +1,35 @@
+﻿<ul data-binding='{"WebApi":"/api/Projects", "PrimaryKeys":["ProjectID"], "IsGranularUpdate":true}' id="Grid" class="ftable" style="margin:0px auto;">
+    <li data-binding="Header" class="fheader">
+        <div>
+            Project
+        </div>
+        <div>
+            Namespace
+        </div>
+        <div>
+            Conn string
+        </div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </li>
+    <li data-binding="Template" class="fline">
+        <div><input type="text" data-binding="Name" /></div>
+        <div><input type="text" data-binding="Namespace" /></div>
+        <div><input type="text" data-binding="DefaultConnectionString" /></div>
+        <div><a href="javascript:" data-binding='{"onclick":"View.Navigate(View.Type.Project.Items, {Name}, null, {ProjectID})"}'>items</a></div>
+        <div><a href="javascript:" data-binding='{"onclick":"View.Navigate(View.Type.Project.Enums, {Name}, null, {ProjectID})"}'>enums</a></div>
+        <div><a href="javascript:" data-binding='{"onclick":"View.Navigate(View.Type.Project.Connections, {Name}, null, {ProjectID})"}'>conn strings</a></div>
+        <div><a href="javascript:" data-binding='{"onclick":"View.Navigate(View.Type.Project.Code, {Name}, [\"Project\"], {ProjectID})"}'>code</a></div>
+    </li>
+    <li data-binding="Footer" class="fline">
+        <div><input type="text" data-binding="Name" /></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div><a href="javascript:" data-binding="insert">insert</a></div>
+    </li>
+</ul>

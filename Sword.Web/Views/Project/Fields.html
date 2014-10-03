@@ -1,0 +1,65 @@
+﻿<ul data-binding='{"WebApi":"/api/Project/Fields", "PrimaryKeys":["FieldID"], "IsGranularUpdate":true}' id="Grid" class="ftable" style="margin:0px auto; font-size:.9em;">
+    <li data-binding="Header" class="fheader">
+        <div>
+            Include
+        </div>
+        <div>
+            Type
+        </div>
+        <div>
+            Property Name
+        </div>
+        <div>Table Name</div>
+        <div>Aliases</div>
+        <div style="text-align:center; width:3em;">Is Enum</div>
+        <div>UDT</div>
+        <div>Default Value</div>
+        <div>Get Method</div>
+        <div>Set Method</div>
+        <div style="text-align:center; width:4em;">Read Only</div>
+        <div style="text-align:center; width:4em;">Set Value</div>
+        <div style="text-align:center; width:4em;">
+            Json Serialize
+        </div>
+        <div style="text-align:center; width:4em;">
+            Xml Serialize
+        </div>
+        <div></div>
+    </li>
+    <li data-binding="Template" class="fline">
+        <div><input type="checkbox" data-binding="Include" /></div>
+        <div><select data-binding='{"value": "SqlDbType", "objectsource":"Data.SqlDbType"}'></select></div>
+        <div><input type="text" data-binding="PropertyName" style="width:7em;"/></div>
+        <div><input type="text" data-binding="TableName"  style="width:7em;"/></div>        
+        <div><input type="text" data-binding="Aliases" /></div>
+        <div style="text-align:center;"><input type="checkbox" data-binding="IsEnum" /></div>        
+        <div><input type="text" data-binding="UDT"  style="width:7em;"/></div>
+        <div><input type="text" data-binding="DefaultValue" /></div>
+        <div><input type="text" data-binding="GetMethod"  style="width:7em;"/></div>
+        <div><input type="text" data-binding="SetMethod"  style="width:7em;"/></div>
+        <div style="text-align:center;"><input type="checkbox" data-binding="IsReadOnly"/></div> 
+        <div style="text-align:center;"><input type="checkbox" data-binding="IncludeInSetValue"/></div> 
+        <div style="text-align:center;"><input type="checkbox" data-binding="JsonSerializable"/></div> 
+        <div style="text-align:center;"><input type="checkbox" data-binding="XmlSerializable"/></div> 
+        <div><a href="javascript:" data-binding='{"delete":"true"}'>delete</a></div> 
+    </li>
+    <li data-binding="Footer" class="fline">
+        <div></div>
+        <div><input type="checkbox" data-binding="Include" style="display:none;" checked="checked"/>
+            <input type="checkbox" data-binding="IsEnum" style="display:none;" />
+        </div>
+        <div><input type="text" data-binding="PropertyName"  style="width:7em;" /></div>
+        <div><input type="text" data-binding="SqlDbType"  style="display:none;" value="8" /></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div><input type="text" data-binding="ObjectID" style="display:none" id="InsertObjectID"/></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div style="text-align:center;"><a href="javascript:" data-binding="insert">insert</a></div>
+    </li>
+</ul>
