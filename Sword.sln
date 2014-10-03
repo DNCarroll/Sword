@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sword.ObjectConstructor", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sword.Test", "Sword.Test\Sword.Test.csproj", "{BA9BF894-9B14-4B39-BC66-31BD07540B08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sword.Web", "Sword.Web\Sword.Web.csproj", "{4D47F450-5C79-4271-B1F7-65D512A67D7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,16 @@ Global
 		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{BA9BF894-9B14-4B39-BC66-31BD07540B08}.Release|x86.ActiveCfg = Release|Any CPU
+		{4D47F450-5C79-4271-B1F7-65D512A67D7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D47F450-5C79-4271-B1F7-65D512A67D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D47F450-5C79-4271-B1F7-65D512A67D7F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4D47F450-5C79-4271-B1F7-65D512A67D7F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4D47F450-5C79-4271-B1F7-65D512A67D7F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4D47F450-5C79-4271-B1F7-65D512A67D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D47F450-5C79-4271-B1F7-65D512A67D7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D47F450-5C79-4271-B1F7-65D512A67D7F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4D47F450-5C79-4271-B1F7-65D512A67D7F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4D47F450-5C79-4271-B1F7-65D512A67D7F}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
