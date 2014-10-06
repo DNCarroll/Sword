@@ -19,7 +19,7 @@ namespace Sword.Web.Api.Project
 
         internal override List<DynamicSword> AfterSelect(List<DynamicSword> objs)
         {
-            return objs.OrderBy(o => o["ClassName"]).ToList();
+            return Universal.Objects.ToList().OrderBy(o => o["ClassName"]).ToList();
         }
 
         internal override DynamicSword Before(ActionType action, DynamicSword obj)

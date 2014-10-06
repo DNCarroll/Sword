@@ -17,7 +17,7 @@ namespace Sword.Web.Api.Project
 
         internal override List<DynamicSword> AfterSelect(List<DynamicSword> objs)
         {
-            return objs.OrderBy(o => o["Name"]).ToList();
+            return Universal.Enums.ToList().OrderBy(o => o["Name"]).ToList();
         }
 
         internal override void ExceptionHandler(Exception ex)
