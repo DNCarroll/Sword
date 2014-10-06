@@ -286,8 +286,8 @@ namespace Sword.Web.CodeConstructor
                 var SwordState =
 @"#region ISwordState
 private SwordState m_ObjectState = SwordState.New;
-[System.Web.Script.Serialization.ScriptIgnoreAttribute]
-[System.Xml.Serialization.XmlIgnoreAttribute]
+
+
 public SwordState ObjectState
 {
     get { return m_ObjectState; }
@@ -315,8 +315,8 @@ public void AcceptChanges()
     m_ObjectState = SwordState.Current;
 }
 private string m_ChangingProperty;
-[System.Web.Script.Serialization.ScriptIgnoreAttribute]
-[System.Xml.Serialization.XmlIgnoreAttribute]
+
+
 public string ChangingProperty
 {
     get { return m_ChangingProperty; }
@@ -374,11 +374,11 @@ public event PropertyChangedEventHandler PropertyChanged;
                     stringBuilder.AppendWithTabs("private " + type.ToString() + " m_" + propertyName + (!Common.IsStringNull(defaultValue) ? " = " + defaultValue + ";" : ";"), tabs);
                     if (!obj.JsonSerializable)
                     {
-                        stringBuilder.AppendWithTabs("[System.Web.Script.Serialization.ScriptIgnoreAttribute]", tabs);
+                        stringBuilder.AppendWithTabs("", tabs);
                     }
                     if (!obj.XmlSerializable)
                     {
-                        stringBuilder.AppendWithTabs("[System.Xml.Serialization.XmlIgnoreAttribute]", tabs);
+                        stringBuilder.AppendWithTabs("", tabs);
                     }
                     stringBuilder.AppendWithTabs("public " + type + " " + propertyName, tabs);
                     stringBuilder.AppendWithTabs("{", tabs);
@@ -424,11 +424,11 @@ public event PropertyChangedEventHandler PropertyChanged;
                 {
                     if (!obj.JsonSerializable)
                     {
-                        stringBuilder.AppendWithTabs("[System.Web.Script.Serialization.ScriptIgnoreAttribute]", tabs);
+                        stringBuilder.AppendWithTabs("", tabs);
                     }
                     if (!obj.XmlSerializable)
                     {
-                        stringBuilder.AppendWithTabs("[System.Xml.Serialization.XmlIgnoreAttribute]", tabs);
+                        stringBuilder.AppendWithTabs("", tabs);
                     }
                     stringBuilder.AppendWithTabs("public " + type.ToString() + " " + propertyName + "{ get; set; }", tabs);
                 }
@@ -981,8 +981,8 @@ public event PropertyChangedEventHandler PropertyChanged;
 
         public static void AddSerializationIgnore(System.Text.StringBuilder sb, int tabs)
         {
-            sb.AppendWithTabs("[System.Xml.Serialization.XmlIgnoreAttribute]", tabs);
-            sb.AppendWithTabs("[System.Web.Script.Serialization.ScriptIgnoreAttribute]", tabs);
+            sb.AppendWithTabs("", tabs);
+            sb.AppendWithTabs("", tabs);
         }
     }
 

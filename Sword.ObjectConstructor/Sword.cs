@@ -57,16 +57,16 @@ namespace Sword.Objects
         }
         public override string[] SerializableProperties() { return new string[] { "ConnectionID", "Name", "Value" }; }
         public override string[] GetStaticallyTypedPropertyNames() { return new string[] { "ConnectionID", "Name", "Value" }; }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public string[] PrimaryKeys { get { return null; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string Table { get { return "Connections"; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string ObjectConnectionString { get { return ConnectionString.Method(); } }
         public override string[] TableFields() { return new string[] { "ConnectionID", "Name", "ConnectionString" }; }
@@ -147,16 +147,16 @@ namespace Sword.Objects
         }
         public override string[] SerializableProperties() { return new string[] { "ConnectionStringID", "MachineName", "Value", "ProjectID", "Target", "IsDefault", "IsProduction" }; }
         public override string[] GetStaticallyTypedPropertyNames() { return new string[] { "ConnectionStringID", "MachineName", "Value", "ProjectID", "Target", "IsDefault", "IsProduction" }; }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public string[] PrimaryKeys { get { return null; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string Table { get { return "ConnectionStrings"; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string ObjectConnectionString { get { return ConnectionString.Method(); } }
         public override string[] TableFields() { return new string[] { "ConnectionStringID", "MachineName", "Value", "ProjectID", "Target", "IsDefault", "IsProduction" }; }
@@ -257,16 +257,16 @@ namespace Sword.Objects
         }
         public override string[] SerializableProperties() { return new string[] { "ConnectionID", "DisplayColumn", "EnumID", "FilterColumn", "FilterValue", "HasFlags", "IncludeNoneValue", "Name", "ProjectID", "TableName", "ValueColumn" }; }
         public override string[] GetStaticallyTypedPropertyNames() { return new string[] { "ConnectionID", "DisplayColumn", "EnumID", "FilterColumn", "FilterValue", "HasFlags", "IncludeNoneValue", "Name", "ProjectID", "TableName", "ValueColumn" }; }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public string[] PrimaryKeys { get { return null; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string Table { get { return "Enums"; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string ObjectConnectionString { get { return ConnectionString.Method(); } }
         public override string[] TableFields() { return new string[] { "ConnectionID", "DisplayColumn", "EnumID", "FilterColumn", "FilterValue", "HasFlags", "IncludeNoneValue", "Name", "ProjectID", "TableName", "ValueColumn" }; }
@@ -397,16 +397,16 @@ namespace Sword.Objects
         }
         public override string[] SerializableProperties() { return new string[] { "Aliases", "DefaultValue", "FieldID", "GetMethod", "Include", "IncludeInSetValue", "IsEnum", "IsReadOnly", "JsonSerializable", "ObjectID", "PropertyName", "SetMethod", "SqlDbType", "TableName", "UDT", "UseChangeEvent", "XmlSerializable" }; }
         public override string[] GetStaticallyTypedPropertyNames() { return new string[] { "Aliases", "DefaultValue", "FieldID", "GetMethod", "Include", "IncludeInSetValue", "IsEnum", "IsReadOnly", "JsonSerializable", "ObjectID", "PropertyName", "SetMethod", "SqlDbType", "TableName", "UDT", "UseChangeEvent", "XmlSerializable" }; }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public string[] PrimaryKeys { get { return null; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string Table { get { return "Fields"; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string ObjectConnectionString { get { return ConnectionString.Method(); } }
         public override string[] TableFields() { return new string[] { "Aliases", "DefaultValue", "FieldID", "GetMethod", "Include", "IncludeInSetValue", "IsEnum", "IsReadOnly", "JsonSerializable", "ObjectID", "PropertyName", "SetMethod", "SqlDbType", "TableName", "UDT", "UseChangeEvent", "XmlSerializable" }; }
@@ -532,16 +532,16 @@ namespace Sword.Objects
         }
         public override string[] SerializableProperties() { return new string[] { "AllowDeletes", "AllowInserts", "ClassName", "ConnectionID", "DefaultConnectionString", "IsPartial", "Namespace", "ObjectID", "PK", "ProjectID", "ScopeID", "TableName", "Target", "UseChangeEvent", "UseObjectState", "UserCode" }; }
         public override string[] GetStaticallyTypedPropertyNames() { return new string[] { "AllowDeletes", "AllowInserts", "ClassName", "ConnectionID", "DefaultConnectionString", "IsPartial", "Namespace", "ObjectID", "PK", "ProjectID", "ScopeID", "TableName", "Target", "UseChangeEvent", "UseObjectState", "UserCode" }; }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public string[] PrimaryKeys { get { return null; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string Table { get { return "Objects"; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string ObjectConnectionString { get { return ConnectionString.Method(); } }
         public override string[] TableFields() { return new string[] { "AllowDeletes", "AllowInserts", "ClassName", "ConnectionID", "DefaultConnectionString", "IsPartial", "Namespace", "ObjectID", "PK", "ProjectID", "ScopeID", "TableName", "Target", "UseChangeEvent", "UseObjectState", "UserCode" }; }
@@ -637,16 +637,16 @@ namespace Sword.Objects
         }
         public override string[] SerializableProperties() { return new string[] { "ParameterID", "ProcedureID", "Scale", "SqlDbType", "Precision", "Size", "Direction", "DefaultValue", "Name", "SourceColumn" }; }
         public override string[] GetStaticallyTypedPropertyNames() { return new string[] { "ParameterID", "ProcedureID", "Scale", "SqlDbType", "Precision", "Size", "Direction", "DefaultValue", "Name", "SourceColumn" }; }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public string[] PrimaryKeys { get { return null; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string Table { get { return "Parameters"; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string ObjectConnectionString { get { return ConnectionString.Method(); } }
         public override string[] TableFields() { return new string[] { "ParameterID", "ProcedureID", "Scale", "SqlDbType", "Precision", "Size", "Direction", "DefaultValue", "Name", "SourceColumn" }; }
@@ -690,16 +690,16 @@ namespace Sword.Objects
         public override void SetValues(object[] values, Dictionary<string, MapPoint> map)
         {
         }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public string[] PrimaryKeys { get { return null; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string Table { get { return "Procedures"; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string ObjectConnectionString { get { return ConnectionString.Method(); } }
         public override string[] TableFields() { return null; }
@@ -775,16 +775,16 @@ namespace Sword.Objects
         }
         public override string[] SerializableProperties() { return new string[] { "BuildPath", "DefaultConnectionString", "Name", "Namespace", "ProjectID", "PublishPath" }; }
         public override string[] GetStaticallyTypedPropertyNames() { return new string[] { "BuildPath", "DefaultConnectionString", "Name", "Namespace", "ProjectID", "PublishPath" }; }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public string[] PrimaryKeys { get { return null; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string Table { get { return "Projects"; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string ObjectConnectionString { get { return ConnectionString.Method(); } }
         public override string[] TableFields() { return new string[] { "BuildPath", "DefaultConnectionString", "Name", "Namespace", "ProjectID", "PublishPath" }; }
@@ -828,16 +828,16 @@ namespace Sword.Objects
         public override void SetValues(object[] values, Dictionary<string, MapPoint> map)
         {
         }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public string[] PrimaryKeys { get { return null; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string Table { get { return "ProjectProcedures"; } }
-        [System.Xml.Serialization.XmlIgnoreAttribute]
-        [System.Web.Script.Serialization.ScriptIgnoreAttribute]
+        
+        
         [JsonIgnore]
         public override string ObjectConnectionString { get { return ConnectionString.Method(); } }
         public override string[] TableFields() { return null; }

@@ -209,7 +209,7 @@ namespace Sword
         }
 
         private string m_ChangingProperty;
-        //        [System.Xml.Serialization.XmlIgnoreAttribute]
+        //        
         //[ScriptIgnore]
         public string ChangingProperty
         {
