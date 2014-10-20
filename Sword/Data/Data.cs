@@ -47,8 +47,7 @@ namespace Sword
         public static bool TrySetSqlCommandParameterValues(this System.Text.RegularExpressions.Regex regex,
             string source,
             d.IDbCommand command,
-            Func<string, object> notFoundInRegexGroups,
-            Func<string, object> regexGroupFoundButNull)
+            Func<string, object> regexNotFoundOrValueIsNull)
         {
             var match = regex.Match(source);
             if (match.Success)
@@ -57,29 +56,30 @@ namespace Sword
                 {
                     item.Value = DBNull.Value;
                     var group = match.Groups[item.SourceColumn];
-                    if (group != null)
+                    //if (group != null || group.Value == null)
+                    //{
+                    if (group != null &&
+                        !string.IsNullOrEmpty(group.Value))
                     {
-                        if (!string.IsNullOrEmpty(group.Value))
-                        {
-                            item.Value = group.Value;
-                        }
-                        else if (regexGroupFoundButNull != null)
-                        {
-                            var value = regexGroupFoundButNull(item.SourceColumn);
-                            if (value != null)
-                            {
-                                item.Value = value;
-                            }
-                        }
+                        item.Value = group.Value;
                     }
-                    else if (notFoundInRegexGroups != null)
+                    else if (regexNotFoundOrValueIsNull != null)
                     {
-                        var value = notFoundInRegexGroups(item.SourceColumn);
+                        var value = regexNotFoundOrValueIsNull(item.SourceColumn);
                         if (value != null)
                         {
                             item.Value = value;
                         }
                     }
+                    //}
+                    //else if (notFoundInRegexGroups != null)
+                    //{
+                    //    var value = notFoundInRegexGroups(item.SourceColumn);
+                    //    if (value != null)
+                    //    {
+                    //        item.Value = value;
+                    //    }
+                    //}
                 }
                 return true;
             }
@@ -87,10 +87,9 @@ namespace Sword
         }
 
         public static void ExecuteWithRegex(this d.IDbCommand command, string source, System.Text.RegularExpressions.Regex regex,
-            Func<string, object> notFoundInRegexGroups = null,
-            Func<string, object> regexGroupFoundButNull = null)
+            Func<string, object> regexNotFoundOrValueIsNull = null)
         {
-            if (regex.TrySetSqlCommandParameterValues(source, command, notFoundInRegexGroups, regexGroupFoundButNull))
+            if (regex.TrySetSqlCommandParameterValues(source, command, regexNotFoundOrValueIsNull))
             {
                 try
                 {
@@ -1004,20 +1003,6 @@ namespace Sword
 					if (commandText.ToLower().Substring(0, 6) != "select")
 					{
                         sqlCommand.CommandType = d.CommandType.StoredProcedure;
-
-                        //if (commandText.IndexOf(".") > -1)
-                        //{
-                        //    var split = commandText.Split(new string[] { "." }, StringSplitOptions.None);
-                        //    var schema = split[0];
-                        //    var text = split[1];
-                        //    sqlCommand.CommandType =
-                        //        (new d.SqlClient.SqlCommand { CommandText = "SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES r WHERE ROUTINE_SCHEMA = '" + Marketers' AND ROUTINE_NAME = '" + UpdateMarketer + "'", Connection = conn }).FirstOrDefault() == null ? d.CommandType.Text : d.CommandType.StoredProcedure;
-                        //}
-                        //else
-                        //{
-                        //    sqlCommand.CommandType =
-                        //        (new d.SqlClient.SqlCommand { CommandText = "select ROUTINE_NAME from INFORMATION_SCHEMA.ROUTINES r where r.ROUTINE_NAME = '" + commandText + "'", Connection = conn }).FirstOrDefault() == null ? d.CommandType.Text : d.CommandType.StoredProcedure;
-                        //}
 					}
 
 					if (sqlCommand.CommandType == d.CommandType.StoredProcedure)
@@ -1044,33 +1029,6 @@ namespace Sword
                             });
                         }
                         conn.Close();
-                        //var parametersList = (new d.SqlClient.SqlCommand { CommandText = getParameterSchemaSelectString(commandText), Connection = conn }).ToList();
-                        //foreach (var item in parametersList)
-                        //{
-                        //    dynamic obj = item;
-                        //    if ((object)obj.Precision == DBNull.Value)
-                        //    {
-                        //        obj.Precision = (byte)0;
-                        //    }
-                        //    if ((object)obj.Scale == DBNull.Value)
-                        //    {
-                        //        obj.Scale = (byte)0;
-                        //    }
-                        //    if ((object)obj.Size == DBNull.Value)
-                        //    {
-                        //        obj.Size = 0;
-                        //    }
-                        //    sqlCommand.Parameters.Add(new d.SqlClient.SqlParameter
-                        //    {
-                        //        Direction = (d.ParameterDirection)obj.Direction,
-                        //        ParameterName = obj.ParameterName,
-                        //        SqlDbType = getSqlDbType(obj.DataType),
-                        //        Size = (int)obj.Size,
-                        //        Precision = (byte)obj.Precision,
-                        //        Scale = (byte)obj.Scale,
-                        //        SourceColumn = obj.ParameterName.Replace("@", "")
-                        //    });
-                        //}
 					}
 					else
 					{
