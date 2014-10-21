@@ -16,6 +16,8 @@ var Accordion;
     function MaximumClass(ele, parentRule) {
         var className = parentRule + " input:checked ~ article.Max" + ele.id;
 
+        //find does it already exists
+        //yes? then mod it to be like this one
         var style = null;
         var mysheet = Accordion.GetStyleSheet("mainSheet");
         var rules = Accordion.GetStyleSheetRules(mysheet);
@@ -144,6 +146,7 @@ var Ajax;
                         Ajax.ConvertProperties(ret);
                     }
                 } catch (e) {
+                    //?
                 }
             }
             if (target) {
@@ -180,6 +183,7 @@ var Ajax;
     }
     Ajax.Initialize = Initialize;
 
+    //tighly coupled says that it expects the base controller path and not the extend /method
     function Insert(url, parameters, successMethod, failureMethod, target) {
         Ajax.HttpAction("POST", url, parameters, successMethod, failureMethod, target);
     }
@@ -268,6 +272,7 @@ var Ajax;
             tempUrl = Ajax.Host + (url.indexOf("/") == 0 ? url : "/" + url);
         }
 
+        // code for IE7+, Firefox, Chrome, Opera, Safari
         var xmlhttp = new XMLHttpRequest();
         if (xmlhttp) {
             xmlhttp.onreadystatechange = function () {
@@ -533,12 +538,18 @@ var Binding;
         Delete: "delete"
     };
 
+    //have this figure out everything it needs to know about
+    //inline matches etc?
+    //returns value no matter what?
+    //take all other references to whatever figuring it out out
     var Attribute = (function () {
+        //trying to do here is cache the function and pass the data over as array
         function Attribute(Name, Value) {
             this.Name = Name;
             this.Value = Value;
             var name = this.Name.toLowerCase();
 
+            //is the name a style property ?
             if (Is.Style(this.Name)) {
                 this.EasyBindable = true;
             } else {
@@ -585,6 +596,10 @@ var Binding;
             this.ParameterProperties = new Array();
             this.InlineMatches = this.Value.match(RegularExpression.StandardBindingPattern);
 
+            //if (!this.InlineMatches)
+            //{
+            //    this.InlineMatches = [this.Value];
+            //}
             if (this.InlineMatches && this.InlineMatches.length > 0) {
                 for (var i = 0; i < this.InlineMatches.length; i++) {
                     var prop = this.InlineMatches[i];
@@ -593,12 +608,15 @@ var Binding;
                 }
             }
             if ((this.InlineMatches && this.InlineMatches.length > 1) || this.Value.indexOf("return") > -1 || this.Name == Binding.Attributes.OnClick || this.Name == Binding.Attributes.OnFocus || this.Name == Binding.Attributes.Prechange || this.Name == Binding.Attributes.OnMouseOut || this.Name == Binding.Attributes.OnMouseOver) {
+                //set up the return method and the parameter array
                 this.CreateTheReturn();
             }
         }
         Attribute.prototype.RawLine = function () {
             var method = this.Value;
 
+            //.match(RegularExpression.MethodPattern);
+            //if (bindingValue.indexOf("return ") == 0 || objectAndMethod) {
             if (method.substring(0, 6) != "return") {
                 method = "return " + method;
             }
@@ -637,6 +655,9 @@ var Binding;
             }
         };
 
+        //ExecuteReturn(element) {
+        //    return null;
+        //}
         Attribute.prototype.Return = function (element) {
             var obj = Binding.Get.Object(element);
             if (this.ReturnMethod) {
@@ -891,6 +912,7 @@ var Binding;
                     var inlineMatches = dataChanged.match(RegularExpression.StandardBindingPattern);
                     var isReturn = dataChanged.indexOf("return") == 0 || dataChanged.match(RegularExpression.MethodPattern);
 
+                    //set up isreturn
                     if (isReturn) {
                         Binding.Get.ReturnValue(dataChanged, element, inlineMatches);
                     }
@@ -906,6 +928,8 @@ var Binding;
             var objectAndMethod = bindingValue.match(RegularExpression.ObjectAndMethod);
             var method = bindingValue;
 
+            //.match(RegularExpression.MethodPattern);
+            //if (bindingValue.indexOf("return ") == 0 || objectAndMethod) {
             method = bindingValue;
             if (method.substring(0, 6) != "return") {
                 method = "return " + method;
@@ -1041,6 +1065,8 @@ var Binding;
                     default:
                         break;
                 }
+                //now hook onchange of value and select
+                //click of checked and radio
             } catch (e) {
                 if (wrapper.ExceptionMethod) {
                     wrapper.ExceptionMethod(e);
@@ -1110,6 +1136,8 @@ var Binding;
         function Delete(element, wrapper, attribute) {
             if (!element.onclick) {
                 element.onclick = function () {
+                    //gonna need parent ul
+                    //gonna need li
                     var parameter = {};
                     if (wrapper.PrimaryKeys) {
                         for (var i = 0; i < wrapper.PrimaryKeys.length; i++) {
@@ -1117,6 +1145,7 @@ var Binding;
                         }
                     }
                     if (wrapper.WebApi) {
+                        //presumably this is always tabular based
                         wrapper.WebApi.Delete(parameter, function (result) {
                             var ul = element.Parent(function (p) {
                                 return p.tagName == "UL";
@@ -1194,6 +1223,7 @@ var Binding;
                                         SetObjectValue(tempObj, extProp.Target, result[extProp.Target].toString());
                                         Thing.Merge(result, tempObj);
 
+                                        //do formatting method here
                                         var formatting = attributes.First(function (o) {
                                             return o.Name == Binding.Attributes.Formatting;
                                         });
@@ -1240,6 +1270,8 @@ var Binding;
             var currentValue = obj[property];
             var tempString = newValue;
 
+            //no need to test the property not the value
+            //if (typeof value === "string") {
             if (typeof currentValue === "number") {
                 obj[property] = parseFloat(tempString);
             } else {
@@ -1711,6 +1743,8 @@ var Binding;
                                                 newObject[field] = element.checked ? true : false;
                                                 break;
                                             case "radio":
+                                                //watch out for Name here
+                                                //need to handle name
                                                 newObject[field] = element.checked ? true : false;
                                                 break;
                                             case "text":
@@ -1827,6 +1861,7 @@ var Binding;
                     var fun = new Function(wrapper.GetParameter);
                     parameter = fun();
 
+                    //should we do this?
                     fun = null;
                 }
             }
@@ -1874,8 +1909,11 @@ var ViewManager;
             this.Key = key;
             this.Parameters = parameters;
             this.Liason = liason;
+            //can find liason by key
         }
         View.prototype.Show = function () {
+            //get the html
+            //set the ViewContainer inner html
             var url = "ViewKey" + this.Key.toString();
             var found = sessionStorage.getItem(url);
             var callback = this.SetHTML;
@@ -1931,6 +1969,7 @@ var ViewManager;
             });
             viewInfo.Show();
         } else {
+            //do nothing?
         }
     }
     ViewManager.BackEvent = BackEvent;
@@ -2074,6 +2113,7 @@ var Calendar;
         element.MonthChanged = false;
         element.MonthChangedCallBack = function (allow) {
             if (allow) {
+                //need to reset formatting?
                 element.Set(element.RequestedDate);
                 element.MonthChanged = false;
             }
@@ -2198,6 +2238,9 @@ var Calendar;
             };
             var year = "a".CreateElement({ innerHTML: element.SelectedDate.getFullYear(), marginLeft: ".25em", href: "javascript:" });
             year.onclick = function () {
+                //dont move beyond current year
+                //this needs to be dynamic
+                //if now == current year do one thing else do something else
                 var years = new Array();
                 var currentyear = (new Date()).getFullYear();
                 var selectedYear = element.SelectedDate.getFullYear();
@@ -2377,6 +2420,7 @@ var DialogButton = (function () {
         this.Text = text;
         this.ClassName = className;
         this.ButtonType = buttonType == null ? 0 /* InputButton */ : buttonType;
+        //        this.ImageSrc = imageSrc;
     }
     return DialogButton;
 })();
@@ -2709,11 +2753,13 @@ var Formatters;
                 date = undefined;
             }
 
+            // Passing date through Date applies Date.parse, if necessary
             date = date ? new Date(date) : new Date();
             if (isNaN(date))
                 throw SyntaxError("invalid date");
             mask = String(DateTime.Masks[mask] || mask || DateTime.Masks["default"]);
 
+            // Allow setting the utc argument via the mask
             if (mask.slice(0, 4) == "UTC:") {
                 mask = mask.slice(4);
                 utc = true;
@@ -2798,6 +2844,7 @@ var Is;
     Is.Property = Property;
     function Array(value) {
         return Object.prototype.toString.call(value) === '[object Array]';
+        //return value && typeof value === 'object' && typeof value.length === 'number';
     }
     Is.Array = Array;
     function Boolean(value) {
@@ -2817,6 +2864,8 @@ var Is;
             } else if (String(value)) {
                 var objDate = new Date(value);
 
+                //what was doing
+                //var objDate = new Date(Date.parse(value));
                 var parts = value.split("/");
                 var year = parseInt(parts[2]);
                 var month = parseInt(parts[0].indexOf("0") == 0 ? parts[0].substring(1) : parts[0]);
@@ -2860,6 +2909,7 @@ var Is;
             flagArray.push(flagArray[flagArray.length - 1] * 2);
         }
 
+        //remove the last one becuase its large than source
         flagArray.splice(flagArray.length - 1, 1);
         var ret = false;
         while (!ret && value <= flagArray[flagArray.length - 1]) {
@@ -2891,6 +2941,10 @@ var Is;
     }
     Is.Function = Function;
     function InternetExplorer() {
+        //MSIE may be spoofed?
+        //        var ua = window.navigator.userAgent;
+        //        var msie = ua.indexOf("MSIE ");
+        //        return msie > 0;
         return '\v' == 'v';
     }
     Is.InternetExplorer = InternetExplorer;
@@ -3037,6 +3091,7 @@ var KeyPress;
             shiftKey = e.shiftKey;
         }
 
+        //hook up events to it
         if (!sender.onclick) {
             sender.onclick = function (e) {
                 sender.focus();
@@ -3262,6 +3317,7 @@ var RegularExpression;
                 for (var i = 0; i < regMatches.length; i++) {
                     for (var j = 0; j < sourceObjectOrArray.length; j++) {
                         if (sourceObjectOrArray[j] && sourceObjectOrArray[j].hasOwnProperty(regMatches[i].PropertyName)) {
+                            //Common.HasProperty(sourceObjectOrArray[j], regMatches[i].PropertyName)) {
                             sourceString = sourceString.replace(regMatches[i].Match, sourceObjectOrArray[j][regMatches[i].PropertyName]);
                             break;
                         }
@@ -3270,6 +3326,7 @@ var RegularExpression;
             } else {
                 for (var i = 0; i < regMatches.length; i++) {
                     if (sourceObjectOrArray && sourceObjectOrArray.hasOwnProperty(regMatches[i].PropertyName)) {
+                        //Common.HasProperty(sourceObjectOrArray, regMatches[i].PropertyName)) {
                         sourceString = sourceString.replace(regMatches[i].Match, sourceObjectOrArray[regMatches[i].PropertyName]);
                     }
                 }
@@ -3551,6 +3608,7 @@ Array.prototype.Take = function (count) {
     return ret;
 };
 
+///takes args as parameters array
 Array.prototype.Add = function (objectOrObjects) {
     if (!Is.Array(objectOrObjects)) {
         objectOrObjects = [objectOrObjects];
@@ -3560,6 +3618,7 @@ Array.prototype.Add = function (objectOrObjects) {
     }
 };
 
+///takes args as parameters array
 Array.prototype.GroupBy = function () {
     var groupBy = [];
     for (var _i = 0; _i < (arguments.length - 0); _i++) {
@@ -3594,6 +3653,7 @@ Array.prototype.GroupBy = function () {
     return ret;
 };
 
+///If functionOrObject is object supply only fields necessary for match
 Array.prototype.IndexOf = function (funcOrObj) {
     var i = -1;
     var isFunction = Is.Function(funcOrObj);
@@ -3620,6 +3680,8 @@ Array.prototype.IndexOf = function (funcOrObj) {
     return i;
 };
 
+///obj - object to insert
+///position - where you want it in the array
 Array.prototype.Insert = function (obj, position) {
     if (position == undefined) {
         position = 0;
@@ -3630,6 +3692,8 @@ Array.prototype.Insert = function (obj, position) {
     this.splice(position, 0, obj);
 };
 
+///If functionOrObject is object supply only fields necessary for match
+///field - the field to sum against
 Array.prototype.Sum = function (field) {
     var ret = 0;
     for (var i = 0; i < this.length; i++) {
@@ -3641,6 +3705,7 @@ Array.prototype.Sum = function (field) {
     return ret;
 };
 
+///property is the property name of the object you want to return as an array
 Array.prototype.ToArray = function (property) {
     var ret = new Array();
     for (var i = 0; i < this.length; i++) {
@@ -3666,15 +3731,32 @@ Date.prototype.SmallDate = function () {
     return now;
 };
 
+/*
+date - date to compare with current date
+*/
 Date.prototype.Equals = function (date) {
     var ret = this.getMonth() == date.getMonth() && this.getFullYear() == date.getFullYear() && this.getDate() == date.getDate();
     return ret;
 };
 
+/*
+days - number of days to add to the current date
+*/
 Date.prototype.AddDays = function (days) {
+    //var milliSecondsPerDay = 24 * 60 * 60 * 1000 * days;
+    //var currentDate = this;
+    //var valueofcurrentDate = currentDate.valueOf() + ((24 * 60 * 60 * 1000) * days);
+    //done like this cause daylight savings interferes with it
     return this.Add(0, 0, days);
+    //return new Date(valueofcurrentDate);
+    //var newDate = new Date(valueofcurrentDate);
+    //return new Date(this.getTime() + milliSecondsPerDay);
 };
 Date.prototype.Add = function (years, months, days, hours, minutes, seconds) {
+    //var milliSecondsPerDay = 24 * 60 * 60 * 1000 * days;
+    //var currentDate = this;
+    //var valueofcurrentDate = currentDate.valueOf() + ((24 * 60 * 60 * 1000) * days);
+    //done like this cause daylight savings interferes with it
     years = years ? years : 0;
     months = months ? months : 0;
     days = days ? days : 0;
@@ -3691,10 +3773,16 @@ Date.prototype.Add = function (years, months, days, hours, minutes, seconds) {
     return new Date(y, m, d, h, mm, s, ms);
 };
 
+/*
+Returns the number of days in the current month
+*/
 Date.prototype.DaysInMonth = function () {
     return 32 - new Date(this.getFullYear(), this.getMonth(), 32).getDate();
 };
 
+/*
+Returns the Name of the current month
+*/
 Date.prototype.MonthName = function () {
     switch (this.getMonth()) {
         case 0:
@@ -3726,11 +3814,19 @@ Date.prototype.MonthName = function () {
     }
 };
 
+/*
+subtractDate - date object
+This return total days between the extended date and the subtract date
+*/
 Date.prototype.DaysDiff = function (subtractDate) {
     var diff = Math.abs(this - subtractDate);
     return diff / 1000 / 60 / 60 / 24;
 };
 
+/*
+subtractDate - date object
+This return total minutes between the extended date and the subtract date
+*/
 Date.prototype.MinuteDiff = function (subtractDate) {
     var diff = Math.abs(this - subtractDate);
     return diff / 1000 / 60 / 60;
@@ -3791,6 +3887,7 @@ HTMLElement.prototype.Set = function (objectProperties) {
     return that;
 };
 
+///Add listener event to the Element
 HTMLElement.prototype.AddListener = function (eventName, method) {
     if (this.addEventListener) {
         this.addEventListener(eventName, method);
@@ -3799,6 +3896,8 @@ HTMLElement.prototype.AddListener = function (eventName, method) {
     }
 };
 
+///clears all matching descendants from the predicate
+///predicate returns bool accepts one arg (element)
 HTMLElement.prototype.Clear = function (predicate, notRecursive) {
     var that = this;
     var children = that.childNodes;
@@ -3824,6 +3923,8 @@ HTMLElement.prototype.Clear = function (predicate, notRecursive) {
     }
 };
 
+///predicate is bool return function that operates with a Parameter of element
+///assumes First element found is only one to delete
 HTMLElement.prototype.Delete = function (predicate) {
     var that = this;
     var found = that.First(predicate);
@@ -3832,6 +3933,7 @@ HTMLElement.prototype.Delete = function (predicate) {
     }
 };
 
+///add range of elements to Element
 HTMLElement.prototype.AddRange = function () {
     var elements = [];
     for (var _i = 0; _i < (arguments.length - 0); _i++) {
@@ -3860,6 +3962,7 @@ HTMLElement.prototype.DimAndOff = function () {
     return ret;
 };
 
+//returns { width: number; height: number; } for element
 HTMLElement.prototype.Dimensions = function () {
     var ret = { width: 0, height: 0 };
     ret.width = this.offsetWidth;
@@ -3867,6 +3970,7 @@ HTMLElement.prototype.Dimensions = function () {
     return ret;
 };
 
+///return { top: number; left: number; } for Element
 HTMLElement.prototype.OffSet = function () {
     var _x = 0;
     var _y = 0;
@@ -3875,11 +3979,14 @@ HTMLElement.prototype.OffSet = function () {
         _x += el.offsetLeft - el.scrollLeft;
         _y += el.offsetTop - el.scrollTop;
 
+        //may not work
         el = el.offsetParent;
     }
     return { top: _y, left: _x };
 };
 
+///returns first parent ancestor that produces true from the predicate function
+//predicate returns bool and takes one arg
 HTMLElement.prototype.Parent = function (predicate) {
     if (predicate(this.parentNode)) {
         return this.parentNode;
@@ -3889,11 +3996,15 @@ HTMLElement.prototype.Parent = function (predicate) {
     return null;
 };
 
+///clears and sets class on Element
 HTMLElement.prototype.SetClass = function (className) {
     this.className = null;
     this.className = className;
 };
 
+///functionOrObject - function or object used to find matching child elements of the Element
+///notRecursive - default false, if true will only go one child deep otherwise dives all descendants,
+///dont supply nodes, its used for recursive additions on descendants
 HTMLElement.prototype.Get = function (func, notRecursive, nodes) {
     if (nodes == null) {
         nodes = new Array();
@@ -3914,10 +4025,12 @@ HTMLElement.prototype.Get = function (func, notRecursive, nodes) {
     return nodes;
 };
 
+///just removes child
 HTMLElement.prototype.Remove = function () {
     this.parentNode.removeChild(this);
 };
 
+///functionOrObject - function or object used to find first matching child element of the Element
 HTMLElement.prototype.First = function (func) {
     var that = this;
     var children = that.childNodes;
@@ -4059,6 +4172,9 @@ String.prototype.Insert = function (parameters, success, failure, target, isRaw)
     Ajax.HttpAction("POST", this, parameters, success, failure, target, isRaw);
 };
 
+///to parse ajax html to an object and pull scripts out of it
+///returns {Html:string, Scripts:Array, LoadScripts()}
+///use LoadScripts to load the array of scripts
 String.prototype.ParseHtml = function () {
     var scripts = new Array();
     var html = this;
@@ -4100,10 +4216,21 @@ String.prototype.ParseHtml = function () {
     return ret;
 };
 
+/*
+returns a string with the whitespace from left and right side of string removed
+var str = "   This is a string   ".Trim();
+//str = "This is a string"
+*/
 String.prototype.Trim = function () {
     return this.replace(/^\s+|\s+$/g, "");
 };
 
+/*
+characterAtZero - character to start at, if end it is not supplied, returns from start chart to end of string
+characterAtEnd - optional, character to stop
+returns the string from characterAtZero to characterAtEnd
+//come back to this one with an example
+*/
 String.prototype.TrimCharacters = function (characterAtZero, characterAtEnd) {
     var ret = this;
     if (characterAtZero) {
@@ -4114,20 +4241,38 @@ String.prototype.TrimCharacters = function (characterAtZero, characterAtEnd) {
     if (characterAtEnd) {
         var lastCharacter = ret.substring(ret.length - 1);
         if (lastCharacter == characterAtEnd) {
+            //not sure about that
             ret = ret.substring(0, ret.length - 1);
         }
     }
     return ret;
 };
 
+/*
+returns a string with white space removed from left side of current string
+var str = "    This is a string".LeftTrim();
+//str == "This is a string"
+*/
 String.prototype.LeftTrim = function () {
     return this.replace(/^\s+/, "");
 };
 
+/*
+returns a string with white space removed from right side of current string
+var str = "This is a string    ".RightTrim();
+//str == "This is a string"
+*/
 String.prototype.RightTrim = function () {
     return this.replace(/\s+$/, "");
 };
 
+/*
+use: "IDofElementOrNameOfElements".E()
+depending on whether an ID or Name is used:
+returns an object for ID
+returns an array of elements for name
+returns null if neither is found
+*/
 String.prototype.E = function () {
     var obj = document.getElementById(this.toString());
     if (obj) {
@@ -4136,10 +4281,20 @@ String.prototype.E = function () {
     return null;
 };
 
+/*
+takes a string of properties and values '"id": "CustomerName", "color": "red", "innerHTML": "John Smith"'
+returns an object with the properties and values added from the string
+var obj = '"id":"CustomerName","color":"red","innerHTML":"John Smith"'.CreateObject();
+var id = obj.id; //id == CustomerName
+or var id = obj["id"];
+*/
 String.prototype.CreateObject = function () {
     return JSON.parse(this);
 };
 
+/*
+replace part of string with pattern in object or an array
+*/
 String.prototype.ScriptReplace = function (sourceObjectOrArray, patternToLookFor, trimFromResultPattern) {
     if (!trimFromResultPattern) {
         trimFromResultPattern = RegularExpression.StandardBindingWrapper;
@@ -4150,6 +4305,12 @@ String.prototype.ScriptReplace = function (sourceObjectOrArray, patternToLookFor
     return RegularExpression.Replace(patternToLookFor, this, sourceObjectOrArray, trimFromResultPattern);
 };
 
+/*
+From a camel case string
+returns a string with a space between each word that begins with an upper case letter
+var sentence = "ThisIsAString".SplitOnUpperCase();
+sentence == "This Is A String";
+*/
 String.prototype.SplitOnUpperCase = function () {
     if (this && this.length > 0) {
         var split = this.match(/[A-Z][a-z]+/g);
@@ -4301,3 +4462,4 @@ function WindowLoad(e) {
     }
 }
 WindowLoad();
+//# sourceMappingURL=Bastard.js.map

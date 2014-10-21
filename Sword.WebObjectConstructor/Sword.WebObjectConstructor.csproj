@@ -23,13 +23,18 @@
     <Content Include="app.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="index.html" />
+    <Content Include="Styles\calendar.css" />
+    <Content Include="Styles\Dialogs.css" />
+    <Content Include="Styles\Site.css" />
+    <Content Include="Styles\UnorderList.css" />
     <Content Include="Views\Projects.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="Scripts\Bastard.ts" />
+    <TypeScriptCompile Include="Scripts\Main.ts" />
+    <TypeScriptCompile Include="Scripts\View.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -87,7 +92,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
-    <Folder Include="Styles\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>

@@ -11,11 +11,20 @@ namespace Sword.WebObjectConstructor
         {
             config.MapHttpAttributeRoutes();
 
+            //config.Routes.MapHttpRoute(
+            //    name: "DefaultApi",
+            //    routeTemplate: "api/{controller}/{id}",
+            //    defaults: new { id = RouteParameter.Optional }
+            //);
+
             config.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{id}",
-                defaults: new { id = RouteParameter.Optional }
+                name: "ControllerActionObj",
+                routeTemplate: "api/{controller}/{action}/{obj}",
+                defaults: new { obj = RouteParameter.Optional }
             );
+
+
+
         }
     }
 }
