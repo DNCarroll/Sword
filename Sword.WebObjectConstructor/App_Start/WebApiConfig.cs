@@ -23,6 +23,12 @@ namespace Sword.WebObjectConstructor
                 defaults: new { obj = RouteParameter.Optional }
             );
 
+            config.Routes.MapHttpRoute(
+                name: "ControllerObj",
+                routeTemplate: "api/{controller}/{obj}",
+                defaults: new { obj = RouteParameter.Optional }
+            );
+
 
 
         }

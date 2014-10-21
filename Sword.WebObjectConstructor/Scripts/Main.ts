@@ -14,6 +14,9 @@ module ViewPaths {
 module Api {
     export var Projects = "/Api/Projects";
 }
+module Data {
+    export var Projects = new Array();
+}
 module Main {
     export function Initialize() {
         //Api.LDCS.Select({}, function (result) {
@@ -46,15 +49,15 @@ module Main {
     }
     export function subLoad() {
 
-        var splits = window.SplitPathName();
-        if (splits.length > 0) {
-            var skey = splits[0];
-            var key = What.Is.EnumValue(ViewType, skey);
-            window.Show(key);
-        }
-        else {
+        //var splits = window.SplitPathName();
+        //if (splits.length > 0) {
+        //    var skey = splits[0];
+        //    var key = What.Is.EnumValue(ViewType, skey);
+        //    window.Show(key);
+        //}
+        //else {
             window.Show(ViewType.Projects);
-        }
+        //}
     }
     export function PageTitle(view: ViewManager.View): string {
         return "Sword Object Constructor";
