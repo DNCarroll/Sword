@@ -19,10 +19,16 @@ module Data {
 }
 module Main {
     export function Initialize() {
+        Api.Projects.Select({}, function (result) {
+            Data.Projects = result;
+            subLoad();
+        }, function () {
+            alert("Failed to load common data.");
+        });
         //Api.LDCS.Select({}, function (result) {
         //    if (result && result.length) {
         //        Data.LDCs = result;
-                subLoad();
+                
         //    }
         //}, function () {
         //        alert("Failed to load common data.");
@@ -49,15 +55,15 @@ module Main {
     }
     export function subLoad() {
 
-        //var splits = window.SplitPathName();
-        //if (splits.length > 0) {
-        //    var skey = splits[0];
-        //    var key = What.Is.EnumValue(ViewType, skey);
-        //    window.Show(key);
-        //}
-        //else {
+        var splits = window.SplitPathName();
+        if (splits.length > 0) {
+            var skey = splits[0];
+            var key = What.Is.EnumValue(ViewType, skey);
+            window.Show(key);
+        }
+        else {
             window.Show(ViewType.Projects);
-        //}
+        }
     }
     export function PageTitle(view: ViewManager.View): string {
         return "Sword Object Constructor";
