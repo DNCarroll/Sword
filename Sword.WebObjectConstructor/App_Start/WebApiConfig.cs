@@ -9,7 +9,8 @@ namespace Sword.WebObjectConstructor
     {
         public static void Register(HttpConfiguration config)
         {
-            Sword.Objects.ConnectionString.Value = "Data Source=LordCearbhall;Initial Catalog=cearbhall;Integrated Security=True";
+            //Sword.Objects.ConnectionString.Value = "Data Source=LordCearbhall;Initial Catalog=cearbhall;Integrated Security=True";
+            Sword.Objects.ConnectionString.Value = "Data Source=vdev001;Initial Catalog=SwordObjects;Integrated Security=True";
             config.MapHttpAttributeRoutes();
 
             //config.Routes.MapHttpRoute(

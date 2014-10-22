@@ -1,0 +1,47 @@
+﻿<ul data-loadbinding='{
+                        "WebApi":"/api/Items",
+                        "UpdateEvent":"View.Items.UpdateEvent",
+                        "PrimaryKeys":["ObjectID"], "GetParameter":"return Data.SelectedProject;"}' id="Grid" class="ftable" style="margin:0px auto;">
+    <li data-binding="Header" class="fheader">
+        <div>Class Name</div>
+        <div>
+            Table Name
+        </div>
+        <div>
+            Connection
+        </div>
+        <div>
+            Namespace
+        </div>
+        <div>Is Partial</div>
+        <div>Connection Method</div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </li>
+    <li data-binding="Template" class="fline">
+        <div><input type="text" data-binding="ClassName" /></div>
+        <div><input type="text" data-binding="TableName" /></div>
+        <div><select data-binding='{"value": "ConnectionID", "displaymember":"Name", "valuemember":"ConnectionID", "datasource":"Data.Connections"}'></select></div>
+        <div><input type="text" data-binding="Namespace" /></div>
+        <div><input type="checkbox" data-binding="IsPartial" /></div>
+        <div><input type="text" data-binding="DefaultConnectionString" /></div>
+        <div><a href="javascript:" data-binding='{"onclick":"View.Navigate(View.Type.Project.Fields, Data.SelectedProject().Name, [{ClassName}], {ProjectID})"}'>fields</a></div>
+        <div><a href="javascript:" data-binding='{"onclick":"Project.Items.TypeScript({obj})"}'>type script</a></div>
+        <div><a href="javascript:" data-binding='{"delete":"true"}'>delete</a></div>
+    </li>
+    <li data-binding="Footer" class="fline">
+        <div><input type="text" data-binding="ClassName" /></div>
+        <div><input type="text" data-binding="TableName" /></div>
+        <div><select data-binding="ConnectionID" id="InsertConnectionID"></select></div>
+        <div><input type="checkbox" data-binding="IsPartial" style="display:none" checked="checked" /></div>
+        <div><input type="text" data-binding="ProjectID" style="display:none" id="InsertProjectID" /></div>
+        <div>
+            <input type="text" data-binding="Namespace" style="display:none" id="InsertNamespace" />
+            <input type="text" data-binding="DefaultConnectionString" style="display:none" value="ConnectionString.Method()" />
+        </div>
+        <div></div>
+        <div></div>
+        <div style="text-align:right;"><a href="javascript:" data-binding="insert">insert</a></div>
+    </li>
+</ul>

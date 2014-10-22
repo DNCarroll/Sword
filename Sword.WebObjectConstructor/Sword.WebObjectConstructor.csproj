@@ -27,6 +27,8 @@
     <Content Include="Styles\Dialogs.css" />
     <Content Include="Styles\Site.css" />
     <Content Include="Styles\UnorderList.css" />
+    <Content Include="Views\Connections.html" />
+    <Content Include="Views\Items.html" />
     <Content Include="Views\Projects.html" />
     <Content Include="web.config" />
   </ItemGroup>
@@ -46,7 +48,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Api\ConnectionsController.cs" />
     <Compile Include="Api\DynamicController.cs" />
+    <Compile Include="Api\ItemsController.cs" />
     <Compile Include="Api\ProjectsController.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Default.aspx.cs">

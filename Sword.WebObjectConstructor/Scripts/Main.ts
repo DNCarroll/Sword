@@ -1,14 +1,18 @@
 ﻿window.PageLoaded(function () {
     var main = "main".E();
     ViewManager.Initialize([
-        new ProjectLiason()
+        new ProjectLiason(),
+        new ConnectionLiason(),
+        new ItemLiason()
     ], Main.PostLoaded);
     Main.Initialize();
 });
 enum ViewType {
-    Projects
+    Projects,
+    Connections,
+    Items
 }; 
-class ProjectLiason implements ViewManager.ILiason {
+class ViewLiasonBase implements ViewManager.ILiason {
     Key: any;
     Url: (View) => string;
     UrlTitle: (View) => string;
@@ -18,39 +22,66 @@ class ProjectLiason implements ViewManager.ILiason {
     IsApi: boolean;
     Container: HTMLElement;
     constructor() {
-        this.Container = "main".E();
-        this.Key = ViewType.Projects;
+        this.Container = "main".E();        
         this.Url = Main.Url;
         this.UrlTitle = Main.UrlTitle;
         this.PageTitle = Main.PageTitle;
         this.Loaded = null;
+        this.Key = null;
+        this.ViewUrl = null;
+    }
+}
+class ProjectLiason extends ViewLiasonBase {
+    constructor() {
+        super();
+        this.Key = ViewType.Projects;
         this.ViewUrl = ViewPaths.Projects;
     }
 }
-class TestLiasion extends ProjectLiason {
+class ConnectionLiason extends ViewLiasonBase {
     constructor() {
         super();
-        this.Key = "ViewType.?";
-        this.ViewUrl = "ViewPaths.?";
+        this.Key = ViewType.Connections;
+        this.ViewUrl = ViewPaths.Connections;
+    }
+}
+class ItemLiason extends ViewLiasonBase {
+    constructor() {
+        super();
+        this.Key = ViewType.Items;
+        this.ViewUrl = ViewPaths.Items;
     }
 }
 module ViewPaths {
     export var Projects = "/Views/Projects.html";
-}
-module Api {
-    export var Projects = "/Api/Projects";
+    export var Connections = "/Views/Connections.html";
+    export var Items = "/Views/Items.html";
 }
 module Data {
-    export var Projects = new Array();
+    export var SelectedProject;
 }
+//module Api {
+//    export var Projects = "/Api/Projects";
+//    export var Connections = "/Api/Connections";
+//}
 module Main {
     export function Initialize() {
-        Api.Projects.Select({}, function (result) {
-            Data.Projects = result;
-            subLoad();
-        }, function () {
-            alert("Failed to load common data.");
-        });
+
+        var splits = window.SplitPathName();
+        if (splits.length > 0) {
+            var skey = splits[0];
+            var key = What.Is.EnumValue(ViewType, skey);
+            window.Show(key);
+        }
+        else {
+            window.Show(ViewType.Projects);
+        }
+        //Api.Projects.Select({}, function (result) {
+        //    Data.Projects = result;
+        //    subLoad();
+        //}, function () {
+        //    alert("Failed to load common data.");
+        //});
         //Api.LDCS.Select({}, function (result) {
         //    if (result && result.length) {
         //        Data.LDCs = result;
@@ -81,15 +112,7 @@ module Main {
     }
     export function subLoad() {
 
-        var splits = window.SplitPathName();
-        if (splits.length > 0) {
-            var skey = splits[0];
-            var key = What.Is.EnumValue(ViewType, skey);
-            window.Show(key);
-        }
-        else {
-            window.Show(ViewType.Projects);
-        }
+        
     }
     export function PageTitle(view: ViewManager.View): string {
         return "Sword Object Constructor";
@@ -100,7 +123,12 @@ module Main {
     //mod the Url to handle parameters?
     export function Url(view: ViewManager.View): string {
         var splits = window.SplitPathName();
-        return What.Is.EnumName(ViewType, view.Key);
+        if (view.Key == ViewType.Items) {
+            return What.Is.EnumName(ViewType, view.Key) + "/" + Data.SelectedProject.ProjectID;
+        }
+        else {
+            return What.Is.EnumName(ViewType, view.Key);
+        }
         //+ (view.Parameters && view.Parameters.length > 0 ? "/" + view.Parameters.join("/") : "");
     }
     export function PostLoaded(view: ViewManager.View) {
