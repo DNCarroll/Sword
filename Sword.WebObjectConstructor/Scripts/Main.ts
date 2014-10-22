@@ -71,6 +71,9 @@ module Main {
         if (splits.length > 0) {
             var skey = splits[0];
             var key = What.Is.EnumValue(ViewType, skey);
+            if (key == ViewType.Items && splits.length == 2) {
+                Data.SelectedProject = { ProjectID: splits[1] };
+            }
             window.Show(key);
         }
         else {
