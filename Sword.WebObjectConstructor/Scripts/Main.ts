@@ -1,7 +1,6 @@
 ﻿window.PageLoaded(function () {
     var main = "main".E();
     ViewManager.Initialize([
-        //new ViewManager.Liason(ViewType.Projects, main, Main.Url, Main.UrlTitle, Main.PageTitle, null, ViewPaths.Projects)
         new ProjectLiason()
     ], Main.PostLoaded);
     Main.Initialize();
@@ -26,6 +25,13 @@ class ProjectLiason implements ViewManager.ILiason {
         this.PageTitle = Main.PageTitle;
         this.Loaded = null;
         this.ViewUrl = ViewPaths.Projects;
+    }
+}
+class TestLiasion extends ProjectLiason {
+    constructor() {
+        super();
+        this.Key = "ViewType.?";
+        this.ViewUrl = "ViewPaths.?";
     }
 }
 module ViewPaths {
