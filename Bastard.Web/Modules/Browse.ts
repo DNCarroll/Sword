@@ -1,5 +1,15 @@
 module ViewManager {
-    export class Liason {
+    export interface ILiason {
+        Key: any;
+        Url: (View) => string;
+        UrlTitle: (View) => string;
+        PageTitle: (View) => string;
+        Loaded: (View) => void;
+        ViewUrl: string;
+        IsApi: boolean;
+        Container: HTMLElement;
+    }
+    export class Liason implements ViewManager.ILiason{
         Key: any;        
         Url: (View) => string;
         UrlTitle: (View) => string;
@@ -23,7 +33,6 @@ module ViewManager {
             this.Loaded = loaded;
             this.ViewUrl = viewUrl;            
         }
-        
     };
 
     export class View {
@@ -76,7 +85,7 @@ module ViewManager {
     export var Views = new Array<View>();
     var Cache = new Array<Liason>();
     export var PostLoaded: (View) => void;    
-    export function Initialize(viewLiasons: Array<Liason>, postLoaded?: (View) => void) {
+    export function Initialize(viewLiasons: Array<ILiason>, postLoaded?: (View) => void) {
         Cache = viewLiasons;        
         PostLoaded = postLoaded;
         window.addEventListener("popstate", ViewManager.BackEvent);

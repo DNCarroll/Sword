@@ -1,4 +1,4 @@
-var ViewManager;
+﻿var ViewManager;
 (function (ViewManager) {
     var Liason = (function () {
         function Liason(key, container, url, urlTitle, pageTitle, loaded, viewUrl) {
@@ -97,3 +97,4 @@ var ViewManager;
     }
     ViewManager.Load = Load;
 })(ViewManager || (ViewManager = {}));
+//# sourceMappingURL=Browse.js.map
