@@ -1,13 +1,33 @@
 ﻿window.PageLoaded(function () {
     var main = "main".E();
     ViewManager.Initialize([
-        new ViewManager.Liason(ViewType.Projects, main, Main.Url, Main.UrlTitle, Main.PageTitle, View.Projects.Load, ViewPaths.Projects)
+        //new ViewManager.Liason(ViewType.Projects, main, Main.Url, Main.UrlTitle, Main.PageTitle, null, ViewPaths.Projects)
+        new ProjectLiason()
     ], Main.PostLoaded);
     Main.Initialize();
 });
 enum ViewType {
     Projects
 }; 
+class ProjectLiason implements ViewManager.ILiason {
+    Key: any;
+    Url: (View) => string;
+    UrlTitle: (View) => string;
+    PageTitle: (View) => string;
+    Loaded: (View) => void;
+    ViewUrl: string;
+    IsApi: boolean;
+    Container: HTMLElement;
+    constructor() {
+        this.Container = "main".E();
+        this.Key = ViewType.Projects;
+        this.Url = Main.Url;
+        this.UrlTitle = Main.UrlTitle;
+        this.PageTitle = Main.PageTitle;
+        this.Loaded = null;
+        this.ViewUrl = ViewPaths.Projects;
+    }
+}
 module ViewPaths {
     export var Projects = "/Views/Projects.html";
 }

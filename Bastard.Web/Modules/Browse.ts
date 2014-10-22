@@ -38,8 +38,8 @@ module ViewManager {
     export class View {
         Key: any;
         Parameters: Array<any>; 
-        Liason: Liason;                      
-        constructor(key: any, parameters:Array<any>, liason:Liason) {
+        Liason: ILiason;                      
+        constructor(key: any, parameters:Array<any>, liason:ILiason) {
             this.Key = key;
             this.Parameters = parameters;
             this.Liason = liason;
@@ -66,7 +66,7 @@ module ViewManager {
                 this.SetHTML(found, this.Liason, this);
             }            
         }
-        SetHTML(html:string, liason:Liason, view:ViewManager.View) {
+        SetHTML(html:string, liason:ILiason, view:ViewManager.View) {
             liason.Container.innerHTML = html; 
             var dataloading = liason.Container.Get(function (e) {
                 return e.hasAttribute("data-loadbinding");
@@ -83,7 +83,7 @@ module ViewManager {
         }
     }
     export var Views = new Array<View>();
-    var Cache = new Array<Liason>();
+    var Cache = new Array<ILiason>();
     export var PostLoaded: (View) => void;    
     export function Initialize(viewLiasons: Array<ILiason>, postLoaded?: (View) => void) {
         Cache = viewLiasons;        
@@ -96,7 +96,7 @@ module ViewManager {
         }
         if (ViewManager.Views.length > 0) {
             var viewInfo = ViewManager.Views[ViewManager.Views.length - 1];
-            var found = <ViewManager.Liason>Cache.First(function (o) {
+            var found = <ViewManager.ILiason>Cache.First(function (o) {
                 return o.Key == viewInfo.Key;
             });
             viewInfo.Show();            
@@ -106,7 +106,7 @@ module ViewManager {
         }
     }
     export function Load(viewKey, parameters?: Array<string>) {
-        var found = <ViewManager.Liason>Cache.First(function (o) {
+        var found = <ViewManager.ILiason>Cache.First(function (o) {
             return o.Key == viewKey;
         });
         if (found) {
