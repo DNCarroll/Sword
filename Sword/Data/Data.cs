@@ -61,7 +61,7 @@ namespace Sword
                     if (group != null &&
                         !string.IsNullOrEmpty(group.Value))
                     {
-                        item.Value = group.Value;
+                        item.Value = group.Value.Trim();
                     }
                     else if (regexNotFoundOrValueIsNull != null)
                     {
@@ -988,7 +988,7 @@ namespace Sword
 
         //SqlCommandBuilder.DeriveParameters(cmd);
 		//now all object code smithed can point here
-		public static d.SqlClient.SqlCommand GetCommand(this string commandText, string connectionString)
+		public static d.SqlClient.SqlCommand GetCommand(this string commandText, string connectionString, d.CommandType commandType = d.CommandType.StoredProcedure)
 		{
 			var found = cachedCommands.FirstOrDefault(o => o.Item1 == commandText && o.Item2 == connectionString);
 			if (found == null)
@@ -998,14 +998,14 @@ namespace Sword
 					var sqlCommand = new d.SqlClient.SqlCommand
 					{
 						CommandText = commandText,
-						CommandType = d.CommandType.Text
+                        CommandType = commandType
 					};
-					if (commandText.ToLower().Substring(0, 6) != "select")
+					if (commandText.ToLower().Substring(0, 6) == "select")
 					{
-                        sqlCommand.CommandType = d.CommandType.StoredProcedure;
+                        commandType = d.CommandType.Text;
 					}
 
-					if (sqlCommand.CommandType == d.CommandType.StoredProcedure)
+                    if (commandType == d.CommandType.StoredProcedure)
 					{
 
                         var temp = new System.Data.SqlClient.SqlCommand{

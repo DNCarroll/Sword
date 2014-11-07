@@ -90,7 +90,6 @@ module Data {
 }
 module Main {
     export function Initialize() {
-
         var splits = window.SplitPathName();
         if (splits.length > 0) {
             var skey = splits[0];
@@ -111,39 +110,6 @@ module Main {
         else {
             window.Show(ViewType.Projects);
         }
-        //Api.Projects.Select({}, function (result) {
-        //    Data.Projects = result;
-        //    subLoad();
-        //}, function () {
-        //    alert("Failed to load common data.");
-        //});
-        //Api.LDCS.Select({}, function (result) {
-        //    if (result && result.length) {
-        //        Data.LDCs = result;
-                
-        //    }
-        //}, function () {
-        //        alert("Failed to load common data.");
-        //    });
-
-        ////get contractLDCs
-        //Api.ContractLDCs.Select({}, function (result) {
-        //    if (result && result.length) {
-        //        Data.ContractLDCs = result;
-        //    }
-        //},
-        //    function () {
-        //        alert('Failed to load common data (CL)');
-        //    });
-        ////get electric contractLDCs
-        //Api.ElectricContractLDCs.Select({}, function (result) {
-        //    if (result && result.length) {
-        //        Data.ElectricContractLDCs = result;
-        //    }
-        //},
-        //    function () {
-        //        alert('Failed to load common data (ECL)');
-        //    });
     }
     export function subLoad() {
 
