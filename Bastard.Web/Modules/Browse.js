@@ -1,5 +1,17 @@
 ﻿var ViewManager;
 (function (ViewManager) {
+    var ConventionLiason = (function () {
+        function ConventionLiason(key, viewName, loaded) {
+            this.Container = null;
+            var viewUrl = "/Views/" + viewName + ".html";
+            this.Key = key;
+            this.Loaded = loaded;
+            this.ViewUrl = viewUrl;
+        }
+        return ConventionLiason;
+    })();
+    ViewManager.ConventionLiason = ConventionLiason;
+    ;
     var Liason = (function () {
         function Liason(key, container, url, urlTitle, pageTitle, loaded, viewUrl) {
             this.Container = container;
@@ -64,11 +76,38 @@
     var Cache = new Array();
     ViewManager.PostLoaded;
     function Initialize(viewLiasons, postLoaded) {
-        Cache = viewLiasons;
+        AddLiasons(viewLiasons);
         ViewManager.PostLoaded = postLoaded;
         window.addEventListener("popstate", ViewManager.BackEvent);
     }
     ViewManager.Initialize = Initialize;
+    function AddLiasons(liasions) {
+        liasions.forEach(function (l) {
+            Cache.Remove(function (l2) {
+                return l2.Key == l.Key;
+            });
+            Cache.Add(l);
+        });
+    }
+    ViewManager.AddLiasons = AddLiasons;
+
+    //    Loaded: (View) => void;
+    //ViewUrl: string;
+    function InitializeByConvention(url, urlTitle, pageTitle, viewContainer, conventionLiasons, postLoaded) {
+        conventionLiasons.forEach(function (o) {
+            o.Url = url;
+            o.UrlTitle = urlTitle;
+            o.PageTitle = pageTitle;
+            o.Container = viewContainer;
+        });
+        AddLiasons(conventionLiasons);
+        if (postLoaded) {
+            ViewManager.PostLoaded = postLoaded;
+        }
+        window.addEventListener("popstate", ViewManager.BackEvent);
+    }
+    ViewManager.InitializeByConvention = InitializeByConvention;
+
     function BackEvent(e) {
         if (ViewManager.Views.length > 1) {
             ViewManager.Views.splice(ViewManager.Views.length - 1, 1);

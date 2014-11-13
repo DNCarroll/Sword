@@ -1951,7 +1951,7 @@ module ViewManager {
             var liason = this.Liason;
             var view = this;
             if (!found || window["IsDebug"]) {
-                Ajax.HttpAction("GET", this.Liason.ViewUrl, {}, function (result) {
+                Ajax.View.Retrieve(this.Liason.ViewUrl, function (result) {
                     if (result) {
                         sessionStorage.setItem(url, result);
                         callback(result, liason, view);

@@ -11,18 +11,6 @@ namespace Sword.WebObjectConstructor.Api
 {
     public class ProjectsController : TypedController<Project>
     {
-
-        internal override dynamic QueriedUser
-        {
-            get
-            {
-                return new { };
-            }
-            set
-            {
-                base.QueriedUser = value;
-            }
-        }
         internal override void ExceptionHandler(Exception ex)
         {
             throw new NotImplementedException();

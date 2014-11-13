@@ -36,16 +36,6 @@ namespace Sword.Api
             }
         }
 
-        private dynamic m_QueriedUser;
-        internal virtual dynamic QueriedUser
-        {
-            get
-            {                
-                return m_QueriedUser;
-            }
-            set { m_QueriedUser = value; }
-        }
-
         private ActionType m_ActionType;
         internal ActionType ActionType
         {
@@ -57,6 +47,21 @@ namespace Sword.Api
 
         internal virtual bool IsUpdateUser()
         {        
+            return true;
+        }
+
+        internal virtual bool IsInsertUser()
+        {
+            return true;
+        }
+
+        internal virtual bool IsDeleteUser()
+        {
+            return true;
+        }
+
+        internal virtual bool IsSelectUser()
+        {
             return true;
         }
 
@@ -89,7 +94,7 @@ namespace Sword.Api
                 try
                 {
 
-                    if (this.QueriedUser != null)
+                    if (this.IsSelectUser())
                     {
                         Before(ActionType.Select, obj);
                         if (databaseObject is DynamicTable)
@@ -122,82 +127,86 @@ namespace Sword.Api
             if (obj != null)
             {
                 var databaseObject = DatabaseObject(obj, actionType);
-                if (IsUpdateUser())
+                this.Before(actionType, obj);
+                if (databaseObject is DynamicTable)
                 {
-
-                    this.Before(actionType, obj);
-                    if (databaseObject is DynamicTable)
+                    var updateTable = (DynamicTable)databaseObject;
+                    switch (actionType)
                     {
-                        var updateTable = (DynamicTable)databaseObject;
-                        switch (actionType)
-                        {
-                            case ActionType.Insert:
-                                updateTable.Insert(obj);
-                                if (InsertReturnsSelect())
+                        case ActionType.Insert:
+                            updateTable.Insert(obj);
+                            if (InsertReturnsSelect())
+                            {
+                                T parameter = new T();
+                                foreach (var item in updateTable.PrimaryKeys())
                                 {
-                                    T parameter = new T();
-                                    foreach (var item in updateTable.PrimaryKeys())
-                                    {
-                                        parameter[item] = obj[item];
-                                    }
-                                    obj = updateTable.FirstOrDefault<T>(parameter);
+                                    parameter[item] = obj[item];
                                 }
-                                break;
-                            case ActionType.Update:
-                                updateTable.Update(obj);
-                                break;
-                            case ActionType.Delete:
-                                updateTable.Delete(obj);
-                                break;
-                            case ActionType.Partial:
-                            case ActionType.Select:
-                            default:
-                                break;
-                        }
-
-                        obj = After(actionType, obj);
-
+                                obj = updateTable.FirstOrDefault<T>(parameter);
+                            }
+                            break;
+                        case ActionType.Update:
+                            updateTable.Update(obj);
+                            break;
+                        case ActionType.Delete:
+                            updateTable.Delete(obj);
+                            break;
+                        case ActionType.Partial:
+                        case ActionType.Select:
+                        default:
+                            break;
                     }
-                    else if (databaseObject is System.Data.SqlClient.SqlCommand)
+
+                    obj = After(actionType, obj);
+
+                }
+                else if (databaseObject is System.Data.SqlClient.SqlCommand)
+                {
+                    var cmd = (System.Data.SqlClient.SqlCommand)databaseObject;
+                    if (cmd != null)
                     {
-                        var cmd = (System.Data.SqlClient.SqlCommand)databaseObject;
-                        if (cmd != null)
+                        try
                         {
-                            try
+                            if (actionType != ActionType.Insert || !InsertReturnsSelect())
                             {
-                                if (actionType != ActionType.Insert || !InsertReturnsSelect())
-                                {
-                                    cmd.Execute(obj);
-                                    obj = After(actionType, obj);
-                                }
-                                else
-                                {
-                                    obj = cmd.FirstOrDefault<T>(obj);
-                                }
+                                cmd.Execute(obj);
+                                obj = After(actionType, obj);
                             }
-                            catch (Exception ex)
+                            else
                             {
-                                ExceptionHandler(ex);
+                                obj = cmd.FirstOrDefault<T>(obj);
                             }
+                        }
+                        catch (Exception ex)
+                        {
+                            ExceptionHandler(ex);
                         }
                     }
                 }
-                else
-                {
-                    obj["SubscriptionEnded"] = true;
-                }
+            }
+            else
+            {
+                obj["SubscriptionEnded"] = true;
             }
             return obj;
         }
 
         public virtual T Put([FromBody]T obj)
         {
-            return runAction(obj, ActionType.Update);
+            if (IsUpdateUser())
+            {
+                return runAction(obj, ActionType.Update);
+            }
+            return obj;
         }
 
         public virtual T Post([FromBody]T obj)
         {
-            return runAction(obj, ActionType.Insert);
+            if (IsInsertUser())
+            {
+                return runAction(obj, ActionType.Insert);
+            }
+            return obj;
         }
 
         public virtual bool Delete([FromBody]T obj)
@@ -205,7 +214,10 @@ namespace Sword.Api
             var ret = true;
             try
             {
-                runAction(obj, ActionType.Delete);
+                if (IsDeleteUser())
+                {
+                    runAction(obj, ActionType.Delete);
+                }
             }
             catch (Exception ex)
             {
@@ -264,6 +276,11 @@ namespace Sword.Api
         #endregion
 
         internal virtual bool IsUpdateUser()
+        {
+            return true;
+        }
+
+        internal virtual bool IsSelectUser()
         {
             return true;
         }

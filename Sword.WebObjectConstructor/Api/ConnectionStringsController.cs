@@ -11,17 +11,6 @@ namespace Sword.WebObjectConstructor.Api
 {
     public class ConnectionStringsController : TypedController<ConnectionStringObject>
     {
-        internal override dynamic QueriedUser
-        {
-            get
-            {
-                return new { };
-            }
-            set
-            {
-                base.QueriedUser = value;
-            }
-        }
         internal override void ExceptionHandler(Exception ex)
         {
             throw new NotImplementedException();

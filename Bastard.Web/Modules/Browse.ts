@@ -9,6 +9,26 @@ module ViewManager {
         IsApi: boolean;
         Container: HTMLElement;
     }
+    export class ConventionLiason implements ViewManager.ILiason {
+        Key: any;
+        Url: (View) => string;
+        UrlTitle: (View) => string;
+        PageTitle: (View) => string;
+        Loaded: (View) => void;
+        ViewUrl: string;
+        IsApi: boolean;
+        Container: HTMLElement;
+        constructor(
+            key:any,
+            viewName: string,
+            loaded?: (View) => void) {
+            this.Container = null;
+            var viewUrl = "/Views/" + viewName + ".html";            
+            this.Key = key;            
+            this.Loaded = loaded;
+            this.ViewUrl = viewUrl;
+        }
+    };
     export class Liason implements ViewManager.ILiason{
         Key: any;        
         Url: (View) => string;
@@ -85,11 +105,40 @@ module ViewManager {
     export var Views = new Array<View>();
     var Cache = new Array<ILiason>();
     export var PostLoaded: (View) => void;    
-    export function Initialize(viewLiasons: Array<ILiason>, postLoaded?: (View) => void) {
-        Cache = viewLiasons;        
+    export function Initialize(viewLiasons: Array<ILiason>, postLoaded?: (View) => void) {        
+        AddLiasons(viewLiasons);      
         PostLoaded = postLoaded;
         window.addEventListener("popstate", ViewManager.BackEvent);
     }
+    export function AddLiasons(liasions: Array<ILiason>) {
+        liasions.forEach(l=> {            
+            Cache.Remove(l2=> l2.Key == l.Key);
+            Cache.Add(l);
+        });
+    }
+    //    Loaded: (View) => void;
+    //ViewUrl: string;
+    export function InitializeByConvention(        
+        url: (View) => string,
+        urlTitle: (View) => string,
+        pageTitle: (View) => string,
+        viewContainer: HTMLElement,
+        conventionLiasons: Array<ConventionLiason>,
+        postLoaded?: (View) => void
+        ) {
+        conventionLiasons.forEach(o=> {
+            o.Url = url;
+            o.UrlTitle = urlTitle;
+            o.PageTitle = pageTitle;
+            o.Container = viewContainer;
+        });        
+        AddLiasons(conventionLiasons);
+        if (postLoaded) {
+            PostLoaded = postLoaded;
+        }
+        window.addEventListener("popstate", ViewManager.BackEvent);
+    }
+    
     export function BackEvent(e) {
         if (ViewManager.Views.length > 1) {
             ViewManager.Views.splice(ViewManager.Views.length - 1, 1);
