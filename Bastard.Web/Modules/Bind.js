@@ -1,4 +1,4 @@
-/// <reference path="../Modules/Ajax.ts"/>
+﻿/// <reference path="../Modules/Ajax.ts"/>
 /// <reference path="../Modules/Formatters.ts"/>
 /// <reference path="../Modules/KeyPress.ts"/>
 /// <reference path="../Modules/Is.ts"/>
