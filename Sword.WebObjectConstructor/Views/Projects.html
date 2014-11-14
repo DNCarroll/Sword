@@ -18,9 +18,9 @@
         <div><input type="text" data-binding="Name" /></div>
         <div><input type="text" data-binding="Namespace" /></div>
         <div><input type="text" data-binding="DefaultConnectionString" /></div>
-        <div><a href="javascript:" data-binding='{"onclick":"View.Projects.LoadView({obj}, ViewType.Items);"}'>items</a></div>
-        <div><a href="javascript:" data-binding='{"onclick":"View.Projects.LoadView({obj}, ViewType.Enums);"}'>enums</a></div>
-        <div><a href="javascript:" data-binding='{"onclick":"View.Projects.LoadView({obj}, ViewType.ConnectionStrings);"}'>conn strings</a></div>
+        <div><a href="javascript:" data-binding='{"onclick":"View.Projects.LoadItems({obj});"}'>items</a></div>
+        <div><a href="javascript:" data-binding='{"onclick":"View.Navigate(View.Type.Project.Enums, {Name}, null, {ProjectID})"}'>enums</a></div>
+        <div><a href="javascript:" data-binding='{"onclick":"View.Navigate(View.Type.Project.Connections, {Name}, null, {ProjectID})"}'>conn strings</a></div>
         <div><a href="javascript:" data-binding='{"onclick":"View.Navigate(View.Type.Project.Code, {Name}, [\"Project\"], {ProjectID})"}'>code</a></div>
     </li>
     <li data-binding="Footer" class="fline">

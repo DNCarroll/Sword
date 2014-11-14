@@ -1,8 +1,8 @@
 ﻿module View {
     export module Projects {
-        export function LoadView(obj, viewType: ViewType) {
+        export function LoadItems(obj) {
             Data.SelectedProject = obj;
-            window.Show(viewType);
+            window.Show(ViewType.Items);
         }
     }
     export module Items {
