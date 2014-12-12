@@ -86,9 +86,10 @@ namespace Sword
             return false;
         }
 
-        public static void ExecuteWithRegex(this d.IDbCommand command, string source, System.Text.RegularExpressions.Regex regex,
+        public static DynamicSword ExecuteWithRegex(this d.IDbCommand command, string source, System.Text.RegularExpressions.Regex regex,
             Func<string, object> regexNotFoundOrValueIsNull = null)
         {
+            var outputParameters = new DynamicSword();
             if (regex.TrySetSqlCommandParameterValues(source, command, regexNotFoundOrValueIsNull))
             {
                 try
@@ -99,19 +100,27 @@ namespace Sword
                     }
                     command.ExecuteNonQuery();
                     command.Connection.Close();
+                    foreach (d.IDbDataParameter parameter in command.Parameters)
+                    {
+                        if(parameter.Direction == d.ParameterDirection.InputOutput || parameter.Direction == d.ParameterDirection.Output)
+                        {
+                            var field = parameter.ParameterName.Replace("@", "");
+                            outputParameters[field] = parameter.Value;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
                     string formatted = string.Format("Execution of 'ExecuteWithRegex' SqlCommand:{0}, ErrorMessage:{1}", command.CommandText, ex.Message);
                     throw new Exception(formatted);
                 }
-
             }
             else
             {
                 string formatted = string.Format("Failed to 'ExecuteWithRegex' SqlCommand:{0}", command.CommandText);
                 throw new Exception(formatted);
             }
+            return outputParameters;
         }
 
         #endregion

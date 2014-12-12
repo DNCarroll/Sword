@@ -8,6 +8,9 @@ namespace Cearbhall.Sword_Extension
 {
     //the class
     //public\spartial\sclass\s(?<ClassName>\w*)\s
+
+    //look for the JsonIgnore?
+    //(?<IgnoreProperty>\[JsonIgnore\]\s*)*public\s(?<Type>\w*)\s(?<PropertyName>\w*)\s*{\sget(?<GetMethod>(.*?))\s*set\s*(?<SetMethod>;|({(.*?)}))
     class Parser
     {
 

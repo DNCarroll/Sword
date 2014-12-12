@@ -1,4 +1,4 @@
-﻿var ViewManager;
+var ViewManager;
 (function (ViewManager) {
     var ConventionLiason = (function () {
         function ConventionLiason(key, viewName, loaded) {
