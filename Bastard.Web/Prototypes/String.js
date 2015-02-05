@@ -52,7 +52,6 @@ String.prototype.Submit = function (parameters, success, failure, target, isRaw)
 String.prototype.Insert = function (parameters, success, failure, target, isRaw) {
     Ajax.HttpAction("POST", this, parameters, success, failure, target, isRaw);
 };
-
 ///to parse ajax html to an object and pull scripts out of it
 ///returns {Html:string, Scripts:Array, LoadScripts()}
 ///use LoadScripts to load the array of scripts
@@ -68,7 +67,9 @@ String.prototype.ParseHtml = function () {
         html = html.replace(/(\r\n|\n|\r)/gm, "");
     }
     var ret = {
-        Html: html, Scripts: scripts, LoadScripts: function () {
+        Html: html,
+        Scripts: scripts,
+        LoadScripts: function () {
             for (var i = 0; i < ret.Scripts.length; i++) {
                 var script = ret.Scripts[i].replace(/<script[^>]*>/gi, "");
                 script = script.replace(/<\/script>/gi, "");
@@ -96,21 +97,19 @@ String.prototype.ParseHtml = function () {
     };
     return ret;
 };
-
 /*
-returns a string with the whitespace from left and right side of string removed
-var str = "   This is a string   ".Trim();
-//str = "This is a string"
+    returns a string with the whitespace from left and right side of string removed
+    var str = "   This is a string   ".Trim();
+    //str = "This is a string"
 */
 String.prototype.Trim = function () {
     return this.replace(/^\s+|\s+$/g, "");
 };
-
 /*
-characterAtZero - character to start at, if end it is not supplied, returns from start chart to end of string
-characterAtEnd - optional, character to stop
-returns the string from characterAtZero to characterAtEnd
-//come back to this one with an example
+    characterAtZero - character to start at, if end it is not supplied, returns from start chart to end of string
+    characterAtEnd - optional, character to stop
+    returns the string from characterAtZero to characterAtEnd
+    //come back to this one with an example
 */
 String.prototype.TrimCharacters = function (characterAtZero, characterAtEnd) {
     var ret = this;
@@ -128,31 +127,28 @@ String.prototype.TrimCharacters = function (characterAtZero, characterAtEnd) {
     }
     return ret;
 };
-
 /*
-returns a string with white space removed from left side of current string
-var str = "    This is a string".LeftTrim();
-//str == "This is a string"
+    returns a string with white space removed from left side of current string
+    var str = "    This is a string".LeftTrim();
+    //str == "This is a string"
 */
 String.prototype.LeftTrim = function () {
     return this.replace(/^\s+/, "");
 };
-
 /*
-returns a string with white space removed from right side of current string
-var str = "This is a string    ".RightTrim();
-//str == "This is a string"
+    returns a string with white space removed from right side of current string
+    var str = "This is a string    ".RightTrim();
+    //str == "This is a string"
 */
 String.prototype.RightTrim = function () {
     return this.replace(/\s+$/, "");
 };
-
 /*
-use: "IDofElementOrNameOfElements".E()
-depending on whether an ID or Name is used:
-returns an object for ID
-returns an array of elements for name
-returns null if neither is found
+    use: "IDofElementOrNameOfElements".E()
+    depending on whether an ID or Name is used:
+    returns an object for ID
+    returns an array of elements for name
+    returns null if neither is found
 */
 String.prototype.E = function () {
     var obj = document.getElementById(this.toString());
@@ -161,20 +157,18 @@ String.prototype.E = function () {
     }
     return null;
 };
-
 /*
-takes a string of properties and values '"id": "CustomerName", "color": "red", "innerHTML": "John Smith"'
-returns an object with the properties and values added from the string
-var obj = '"id":"CustomerName","color":"red","innerHTML":"John Smith"'.CreateObject();
-var id = obj.id; //id == CustomerName
-or var id = obj["id"];
+    takes a string of properties and values '"id": "CustomerName", "color": "red", "innerHTML": "John Smith"'
+    returns an object with the properties and values added from the string
+    var obj = '"id":"CustomerName","color":"red","innerHTML":"John Smith"'.CreateObject();
+    var id = obj.id; //id == CustomerName
+    or var id = obj["id"];
 */
 String.prototype.CreateObject = function () {
     return JSON.parse(this);
 };
-
 /*
-replace part of string with pattern in object or an array
+    replace part of string with pattern in object or an array
 */
 String.prototype.ScriptReplace = function (sourceObjectOrArray, patternToLookFor, trimFromResultPattern) {
     if (!trimFromResultPattern) {
@@ -185,12 +179,11 @@ String.prototype.ScriptReplace = function (sourceObjectOrArray, patternToLookFor
     }
     return RegularExpression.Replace(patternToLookFor, this, sourceObjectOrArray, trimFromResultPattern);
 };
-
 /*
-From a camel case string
-returns a string with a space between each word that begins with an upper case letter
-var sentence = "ThisIsAString".SplitOnUpperCase();
-sentence == "This Is A String";
+    From a camel case string
+    returns a string with a space between each word that begins with an upper case letter
+    var sentence = "ThisIsAString".SplitOnUpperCase();
+    sentence == "This Is A String";
 */
 String.prototype.SplitOnUpperCase = function () {
     if (this && this.length > 0) {
@@ -201,7 +194,6 @@ String.prototype.SplitOnUpperCase = function () {
     }
     return this;
 };
-
 String.prototype.CreateElement = function (objectProperties) {
     var obj = document.createElement(this);
     if (objectProperties) {

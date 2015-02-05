@@ -39,8 +39,7 @@ var Binding;
         Formatting: "formatting",
         Delete: "delete"
     };
-
-    //have this figure out everything it needs to know about
+    //have this figure out everything it needs to know about 
     //inline matches etc?
     //returns value no matter what?
     //take all other references to whatever figuring it out out
@@ -50,11 +49,11 @@ var Binding;
             this.Name = Name;
             this.Value = Value;
             var name = this.Name.toLowerCase();
-
             //is the name a style property ?
             if (Is.Style(this.Name)) {
                 this.EasyBindable = true;
-            } else {
+            }
+            else {
                 switch (name) {
                     case "objectsource":
                     case "datasource":
@@ -85,7 +84,6 @@ var Binding;
                     case "onclick":
                     case "src":
                     case "href":
-
                     case "style":
                     default:
                         this.Name = name;
@@ -93,13 +91,10 @@ var Binding;
                         break;
                 }
             }
-
             this.InlineMatches = new Array();
             this.ReturnMethod = null;
             this.ParameterProperties = new Array();
-
             this.InlineMatches = this.Value.match(RegularExpression.StandardBindingPattern);
-
             //if (!this.InlineMatches)
             //{
             //    this.InlineMatches = [this.Value];
@@ -111,7 +106,6 @@ var Binding;
                     this.ParameterProperties.push(prop);
                 }
             }
-
             if ((this.InlineMatches && this.InlineMatches.length > 1) || this.Value.indexOf("return") > -1 || this.Name == Binding.Attributes.OnClick || this.Name == Binding.Attributes.OnFocus || this.Name == Binding.Attributes.Prechange || this.Name == Binding.Attributes.OnMouseOut || this.Name == Binding.Attributes.OnMouseOver) {
                 //set up the return method and the parameter array
                 this.CreateTheReturn();
@@ -119,7 +113,6 @@ var Binding;
         }
         Attribute.prototype.RawLine = function () {
             var method = this.Value;
-
             //.match(RegularExpression.MethodPattern);
             //if (bindingValue.indexOf("return ") == 0 || objectAndMethod) {
             if (method.substring(0, 6) != "return") {
@@ -136,6 +129,7 @@ var Binding;
             return method;
         };
         Attribute.prototype.CreateTheReturn = function () {
+            //what is return line?
             switch (this.ParameterProperties.length) {
                 case 0:
                     this.ReturnMethod = new Function(this.RawLine());
@@ -159,9 +153,8 @@ var Binding;
                     return null;
             }
         };
-
         //ExecuteReturn(element) {
-        //    return null;
+        //    return null;            
         //}
         Attribute.prototype.Return = function (element) {
             var obj = Binding.Get.Object(element);
@@ -171,9 +164,11 @@ var Binding;
                     var property = this.ParameterProperties[i];
                     if (property == "sender") {
                         arrayOfValues.push(element);
-                    } else if (property == "obj") {
+                    }
+                    else if (property == "obj") {
                         arrayOfValues.push(obj);
-                    } else {
+                    }
+                    else {
                         arrayOfValues.push(this.DrilldownValue(obj, property));
                     }
                 }
@@ -193,9 +188,11 @@ var Binding;
                     default:
                         return null;
                 }
-            } else if (this.ParameterProperties.length == 1) {
+            }
+            else if (this.ParameterProperties.length == 1) {
                 return this.DrilldownValue(obj, this.ParameterProperties[0]);
-            } else {
+            }
+            else {
                 return this.DrilldownValue(obj, this.Value);
             }
         };
@@ -206,10 +203,12 @@ var Binding;
                 if (Is.Property(properties[i], dataObject)) {
                     if (i + 1 == properties.length) {
                         return dataObject[properties[i]];
-                    } else {
+                    }
+                    else {
                         dataObject = dataObject[properties[i]];
                     }
-                } else {
+                }
+                else {
                     return null;
                 }
             }
@@ -271,6 +270,7 @@ var Binding;
         return Wrapper;
     })();
     Binding.Wrapper = Wrapper;
+    var Get;
     (function (Get) {
         function InlineReturn(returnLine, arrayOfValues) {
             switch (arrayOfValues.length) {
@@ -324,9 +324,11 @@ var Binding;
             }
             if (element.DataObject) {
                 dataObject = element.DataObject;
-            } else if (element.parentNode["DataObject"]) {
+            }
+            else if (element.parentNode["DataObject"]) {
                 dataObject = element.parentNode["DataObject"];
-            } else if (element.parentNode) {
+            }
+            else if (element.parentNode) {
                 dataObject = Binding.Get.Object(element.parentNode, property, callingElement);
             }
             if (property) {
@@ -337,7 +339,8 @@ var Binding;
                             if (i + 1 < properties.length) {
                                 dataObject = dataObject[properties[i]];
                             }
-                        } else {
+                        }
+                        else {
                             dataObject = null;
                             break;
                         }
@@ -351,7 +354,8 @@ var Binding;
             var pn = element.parentNode;
             if (pn.Wrapper) {
                 return pn.Wrapper.PrimaryKeys;
-            } else if (pn) {
+            }
+            else if (pn) {
                 return Binding.Get.PrimaryKey(pn);
             }
             return null;
@@ -367,13 +371,15 @@ var Binding;
                 dataBindings = dataBindings.Trim();
                 if (dataBindings.indexOf("{") == 0) {
                     ret = JSON.parse(dataBindings);
-                } else {
+                }
+                else {
                     dataBindings = dataBindings.split("::");
                     for (var i = 0; i < dataBindings.length; i++) {
                         var dataBinding = dataBindings[i].split(":");
                         if (dataBinding.length == 1) {
                             ret.LineType = dataBinding[0].Trim();
-                        } else {
+                        }
+                        else {
                             ret[dataBinding[0].Trim()] = dataBinding[1].Trim();
                         }
                     }
@@ -387,10 +393,10 @@ var Binding;
             var tempObj = null;
             if (Is.String(dataBinding) && dataBinding.indexOf("{") == 0 && dataBinding.substring(dataBinding.length - 1) == "}") {
                 tempObj = JSON.parse(dataBinding);
-            } else if (Is.Object(dataBinding)) {
+            }
+            else if (Is.Object(dataBinding)) {
                 tempObj = dataBinding;
             }
-
             if (tempObj && element) {
                 for (var prop in tempObj) {
                     if (!Is.Function(tempObj[prop])) {
@@ -400,7 +406,8 @@ var Binding;
                         }
                     }
                 }
-            } else if (Is.String(dataBinding) && element) {
+            }
+            else if (Is.String(dataBinding) && element) {
                 var splits = dataBinding.split("::");
                 for (var i = 0; i < splits.length; i++) {
                     var att = this.Attribute(splits[i], element);
@@ -417,12 +424,12 @@ var Binding;
                 if (Is.String(dataChanged)) {
                     var inlineMatches = dataChanged.match(RegularExpression.StandardBindingPattern);
                     var isReturn = dataChanged.indexOf("return") == 0 || dataChanged.match(RegularExpression.MethodPattern);
-
-                    //set up isreturn
+                    //set up isreturn 
                     if (isReturn) {
                         Binding.Get.ReturnValue(dataChanged, element, inlineMatches);
                     }
-                } else {
+                }
+                else {
                     dataChanged(obj, property);
                 }
             }
@@ -433,7 +440,6 @@ var Binding;
             var tempValue = null;
             var objectAndMethod = bindingValue.match(RegularExpression.ObjectAndMethod);
             var method = bindingValue;
-
             //.match(RegularExpression.MethodPattern);
             //if (bindingValue.indexOf("return ") == 0 || objectAndMethod) {
             method = bindingValue;
@@ -448,10 +454,12 @@ var Binding;
                     if (inlineMatches[i] == "{obj}") {
                         arrayOfValues.push(Binding.Get.Object(element));
                         method = method.replace("{obj}", "obj" + i.toString());
-                    } else if (inlineMatches[i] == "{sender}") {
+                    }
+                    else if (inlineMatches[i] == "{sender}") {
                         arrayOfValues.push(element);
                         method = method.replace("{sender}", "obj" + i.toString());
-                    } else {
+                    }
+                    else {
                         var extProp = Binding.Get.ExtendedProperty(inlineMatches[i]);
                         var tempObj = Binding.Get.Object(element, extProp.Extended);
                         arrayOfValues.push(tempObj[extProp.Target]);
@@ -515,10 +523,12 @@ var Binding;
                         default:
                             break;
                     }
-                } else {
+                }
+                else {
                     attributeAndValue = { Name: attributeAndValue[0], Value: attributeAndValue[1] };
                 }
-            } else {
+            }
+            else {
                 attributeAndValue = line;
             }
             if (attributeAndValue) {
@@ -528,20 +538,20 @@ var Binding;
             return null;
         }
         Get.Attribute = Attribute;
-    })(Binding.Get || (Binding.Get = {}));
-    var Get = Binding.Get;
+    })(Get = Binding.Get || (Binding.Get = {}));
+    var Set;
     (function (Set) {
         function SetBinding(element, wrapper, attributes) {
-            try  {
+            try {
                 for (var i = 0; i < attributes.length; i++) {
                     var att = attributes[i];
                     if (att.EasyBindable) {
                         Binding.Set.AttributeValue(element, att);
-                    } else if (att.Name == "delete") {
+                    }
+                    else if (att.Name == "delete") {
                         Binding.Set.Delete(element, wrapper, att);
                     }
                 }
-
                 var tagName = element.tagName.toLowerCase();
                 switch (tagName) {
                     case "input":
@@ -572,9 +582,8 @@ var Binding;
                     default:
                         break;
                 }
-                //now hook onchange of value and select
-                //click of checked and radio
-            } catch (e) {
+            }
+            catch (e) {
                 if (wrapper.ExceptionMethod) {
                     wrapper.ExceptionMethod(e);
                 }
@@ -587,29 +596,36 @@ var Binding;
                 element.onclick = function () {
                     return att.Return(element);
                 };
-            } else if (att.Name == "onmouseover") {
+            }
+            else if (att.Name == "onmouseover") {
                 element.onmouseover = function () {
                     return att.Return(element);
                 };
-            } else if (att.Name == "onmouseout") {
+            }
+            else if (att.Name == "onmouseout") {
                 element.onmouseout = function () {
                     return att.Return(element);
                 };
-            } else if (att.Name == Binding.Attributes.OnFocus) {
+            }
+            else if (att.Name == Binding.Attributes.OnFocus) {
                 element.onfocus = function () {
                     return att.Return(element);
                 };
-            } else {
+            }
+            else {
                 tempValue = att.Return(element);
                 if (att.Name == "classname" || att.Name == "cls") {
                     element.className = null;
                     element.className = tempValue;
-                } else if (att.Name == "for") {
+                }
+                else if (att.Name == "for") {
                     element.setAttribute("for", tempValue);
-                } else if (Is.Property(att.Name, element)) {
+                }
+                else if (Is.Property(att.Name, element)) {
                     element[att.Name] = null;
                     element[att.Name] = tempValue;
-                } else if (Is.Style(att.Name)) {
+                }
+                else if (Is.Style(att.Name)) {
                     element.style[att.Name] = tempValue;
                 }
             }
@@ -622,7 +638,6 @@ var Binding;
                     return ba.Value == prop;
                 });
             });
-
             boundElements.forEach(function (ele) {
                 var temp = ele;
                 Binding.Set.SetBinding(temp, temp.Wrapper, temp.BindingAttributes);
@@ -635,7 +650,8 @@ var Binding;
             });
             if (dcMethod) {
                 dcMethod.Return(element);
-            } else {
+            }
+            else {
                 Binding.Get.DataChanged(wrapper.DataChanged, element, tempObj, extProp.Target);
             }
             Binding.Set.Cascade(element, extProp.Target);
@@ -669,7 +685,8 @@ var Binding;
                             Updated(element.DataObject, 2 /* Delete */, wrapper, attribute.Name);
                         }, function (result) {
                         });
-                    } else {
+                    }
+                    else {
                         var ul = element.Parent(function (p) {
                             return p.tagName == "UL";
                         });
@@ -712,7 +729,6 @@ var Binding;
                         extProp.Target = tp.Value;
                         tempObj = Binding.Get.Object(element, extProp.Target);
                     }
-
                     if (tempObj) {
                         var prechange = attributes.First(function (o) {
                             return o.Name == Binding.Attributes.Prechange;
@@ -731,7 +747,6 @@ var Binding;
                                         tempElement.value = result[extProp.Target];
                                         SetObjectValue(tempObj, extProp.Target, result[extProp.Target].toString());
                                         Thing.Merge(result, tempObj);
-
                                         //do formatting method here
                                         var formatting = attributes.First(function (o) {
                                             return o.Name == Binding.Attributes.Formatting;
@@ -748,11 +763,13 @@ var Binding;
                                         wrapper.ExceptionEvent(result, tempObj, extProp.Target);
                                     }
                                 });
-                            } else {
+                            }
+                            else {
                                 PostChange(element, wrapper, attributes, tempObj, extProp);
                                 Updated(element.DataObject, 1 /* Update */, wrapper, extProp.Target);
                             }
-                        } else if (Is.Property(extProp.Target, tempObj)) {
+                        }
+                        else if (Is.Property(extProp.Target, tempObj)) {
                             tempElement.value = tempObj[extProp.Target];
                         }
                     }
@@ -769,7 +786,8 @@ var Binding;
                     }
                 }
                 parameter[extProp.Target] = tempObj[extProp.Target];
-            } else {
+            }
+            else {
                 parameter = tempObj;
             }
             return parameter;
@@ -778,12 +796,12 @@ var Binding;
         function SetObjectValue(obj, property, newValue) {
             var currentValue = obj[property];
             var tempString = newValue;
-
             //no need to test the property not the value
             //if (typeof value === "string") {
             if (typeof currentValue === "number") {
                 obj[property] = parseFloat(tempString);
-            } else {
+            }
+            else {
                 obj[property] = tempString;
             }
         }
@@ -800,7 +818,8 @@ var Binding;
             var obj = Binding.Get.Object(element, extProp.Extended);
             if (Is.Property(extProp.Target, obj)) {
                 input.checked = obj[extProp.Target] ? true : false;
-            } else {
+            }
+            else {
                 input.checked = null;
             }
             if (!input.onclick) {
@@ -838,10 +857,12 @@ var Binding;
                                         wrapper.ExceptionEvent(result, tempObj, extProp.Target);
                                     }
                                 });
-                            } else {
+                            }
+                            else {
                                 PostChange(element, wrapper, attributes, tempObj, extProp);
                             }
-                        } else if (Is.Property(extProp.Target, tempObj)) {
+                        }
+                        else if (Is.Property(extProp.Target, tempObj)) {
                             input.checked = tempObj[extProp.Target];
                         }
                     }
@@ -862,7 +883,8 @@ var Binding;
                 var obj = Binding.Get.Object(element, extProp.Extended);
                 if (Is.Property(extProp.Target, obj) && input.value == obj[extProp.Target]) {
                     input.checked = true;
-                } else {
+                }
+                else {
                     input.checked = null;
                 }
                 if (!input.onclick) {
@@ -902,7 +924,8 @@ var Binding;
                                             wrapper.ExceptionEvent(result, tempObj, extProp.Target);
                                         }
                                     });
-                                } else {
+                                }
+                                else {
                                     PostChange(element, wrapper, attributes, tempObj, extProp);
                                 }
                             }
@@ -943,10 +966,12 @@ var Binding;
                 var dataObject = new Function("return " + dataSource.Value + ";");
                 if (vm != null && dm != null) {
                     select.AddOptions(dataObject(), vm.Value, dm.Value, selectedValue);
-                } else {
+                }
+                else {
                     select.AddOptions(dataObject(), null, null, selectedValue);
                 }
-            } else if (attributes.First(function (o) {
+            }
+            else if (attributes.First(function (o) {
                 return o.Name == Binding.Attributes.ObjectSource;
             })) {
                 var objectSource = attributes.First(function (o) {
@@ -954,7 +979,8 @@ var Binding;
                 });
                 var dataObject = new Function("return " + objectSource.Value + ";");
                 select.AddOptionsViaObject(dataObject(), selectedValue);
-            } else if (attributes.First(function (o) {
+            }
+            else if (attributes.First(function (o) {
                 return o.Name == Binding.Attributes.DataSourceMethod;
             })) {
                 var dataSourceMethod = attributes.First(function (o) {
@@ -965,12 +991,12 @@ var Binding;
             }
         }
         Set.DataSource = DataSource;
-    })(Binding.Set || (Binding.Set = {}));
-    var Set = Binding.Set;
+    })(Set = Binding.Set || (Binding.Set = {}));
     function Execute(element, data, appendData) {
         if (appendData && element.DataObject && Is.Array(element.DataObject)) {
             element.DataObject.Add(data);
-        } else {
+        }
+        else {
             element.DataObject = data;
         }
         var wrapper;
@@ -979,15 +1005,18 @@ var Binding;
             element.Wrapper = new Binding.Wrapper(json);
             element.removeAttribute("data-binding");
             wrapper = element.Wrapper;
-        } else if (element.Wrapper) {
+        }
+        else if (element.Wrapper) {
             wrapper = element.Wrapper;
-        } else if (!element.Wrapper) {
+        }
+        else if (!element.Wrapper) {
             element.Wrapper = wrapper;
         }
         var tagName = element.tagName.toLowerCase();
         if (tagName == "ul" && !wrapper.IsForm) {
             Binding.Grid.Execute(element, data, appendData);
-        } else {
+        }
+        else {
             Binding.subExecute(element, wrapper);
         }
     }
@@ -1005,7 +1034,8 @@ var Binding;
                     var attributes = Binding.Get.Attributes(dataBinding, ele);
                     wrapper.BindingArray.push({ Attributes: attributes });
                     ele.BindingAttributes = attributes;
-                } else {
+                }
+                else {
                     ele.BindingAttributes = wrapper.BindingArray[i].Attributes;
                 }
                 ele.removeAttribute("data-binding");
@@ -1037,7 +1067,8 @@ var Binding;
                     var attributes = Binding.Get.Attributes(dataBinding, ele);
                     wrapper.BindingArray.push({ Attributes: attributes });
                     ele.BindingAttributes = attributes;
-                } else {
+                }
+                else {
                     ele.BindingAttributes = wrapper.BindingArray[i].Attributes;
                 }
                 ele.removeAttribute("data-binding");
@@ -1052,31 +1083,34 @@ var Binding;
         }
     }
     Binding.AsynchSubExecute = AsynchSubExecute;
+    var Grid;
     (function (Grid) {
         Grid.LineTypes = { Header: "Header", Footer: "Footer", Template: "Template" };
         function Add(unorderedList, data, appendData) {
             var arrayOfdata;
             if (Is.Array(data)) {
                 arrayOfdata = data;
-            } else {
+            }
+            else {
                 arrayOfdata = new Array();
                 arrayOfdata.Add(data);
             }
             if (unorderedList.Wrapper.AsyncLoad) {
                 AsyncBind(unorderedList, data, appendData);
-            } else {
+            }
+            else {
                 for (var i = 0; i < arrayOfdata.length; i++) {
                     Binding.Grid.AddItem(unorderedList, arrayOfdata[i]);
                 }
-                if (arrayOfdata.length > 0) {
-                    var obj = arrayOfdata[0];
-                    var li = unorderedList.First(function (e) {
-                        return e.tagName == "LI" && e.DataObject;
-                    });
-                    if (li) {
-                        SetSelected(unorderedList, obj, li);
-                    }
-                }
+                //if (arrayOfdata.length > 0) {
+                //    var obj = arrayOfdata[0];
+                //    var li = unorderedList.First(function (e) {
+                //        return e.tagName == "LI" && e.DataObject;
+                //    });
+                //    if (li) {
+                //        SetSelected(unorderedList, obj, li);
+                //    }
+                //}
                 unorderedList.Wrapper.InitialLoad = false;
             }
         }
@@ -1106,27 +1140,27 @@ var Binding;
         function CreateListItem(unorderedList, tempObj, wrapper) {
             var listitem = GetListItem(unorderedList.Template.style, unorderedList.Template.cls, unorderedList.Template.innerHTML, tempObj, wrapper);
             HookUpListItemClicked(unorderedList, tempObj, listitem);
-
             if (unorderedList.HasFooter) {
-                var footer = unorderedList.First(function (o) {
-                    return o["LineType"] == Binding.Grid.LineTypes.Footer;
-                });
+                var footer = unorderedList.First(function (o) { return o["LineType"] == Binding.Grid.LineTypes.Footer; });
                 if (wrapper.NewRowBeingAdded) {
                     var insertListItem = wrapper.NewRowBeingAdded(tempObj);
                     if (insertListItem) {
                         if (footer) {
                             unorderedList.insertBefore(insertListItem, footer);
-                        } else {
+                        }
+                        else {
                             unorderedList.appendChild(insertListItem);
                         }
                     }
                 }
                 if (footer) {
                     unorderedList.insertBefore(listitem, footer);
-                } else {
+                }
+                else {
                     unorderedList.appendChild(listitem);
                 }
-            } else {
+            }
+            else {
                 if (wrapper.NewRowBeingAdded) {
                     var insertListItem = wrapper.NewRowBeingAdded(tempObj);
                     if (insertListItem) {
@@ -1148,26 +1182,27 @@ var Binding;
                     var header = div.children[0];
                     div.removeChild(header);
                     header["IsHeader"] = true;
-                } else {
+                }
+                else {
                     unorderedList.removeChild(header);
                 }
                 if (unorderedList.childNodes.length > 0) {
                     unorderedList.insertBefore(header, unorderedList.childNodes[0]);
-                } else {
+                }
+                else {
                     unorderedList.appendChild(header);
                 }
                 Binding.Grid.HookInsertTemplate(header, unorderedList);
             }
             if (unorderedList.Footer) {
-                var footer = unorderedList.First(function (ele) {
-                    return ele["IsFooter"];
-                });
+                var footer = unorderedList.First(function (ele) { return ele["IsFooter"]; });
                 if (!footer) {
                     div = "div".CreateElement({ innerHTML: unorderedList.Footer });
                     footer = div.children[0];
                     div.removeChild(footer);
                     footer["IsFooter"] = true;
-                } else {
+                }
+                else {
                     unorderedList.removeChild(footer);
                 }
                 unorderedList.appendChild(footer);
@@ -1192,17 +1227,20 @@ var Binding;
                     unorderedList.AsyncPosition = unorderedList.AsyncPosition + 1;
                     if (unorderedList.AsyncPosition < unorderedList.DataObject.length) {
                         setTimeout(async, 0);
-                    } else {
+                    }
+                    else {
                         EndAsyncBind(unorderedList);
                     }
-                } else {
+                }
+                else {
                     EndAsyncBind(unorderedList);
                 }
             };
             if (!appendData) {
                 unorderedList.innerHTML = html;
                 unorderedList.AsyncPosition = 0;
-            } else {
+            }
+            else {
                 var div = "div".CreateElement({ innerHTML: html });
                 while (div.children.length > 0) {
                     var child = div.children[div.children.length - 1];
@@ -1219,13 +1257,15 @@ var Binding;
             var found = wrapper.InitialLoad ? null : unorderedList.First(function (ele) {
                 if (wrapper.PrimaryKeys && wrapper.PrimaryKeys.length > 0) {
                     return ele.DataObject && Thing.Concat(ele.DataObject, wrapper.PrimaryKeys) == Thing.Concat(tempObj, wrapper.PrimaryKeys);
-                } else {
+                }
+                else {
                     return false;
                 }
             });
             if (found) {
                 Binding.subExecute(found, wrapper);
-            } else {
+            }
+            else {
                 CreateListItem(unorderedList, tempObj, wrapper);
             }
         }
@@ -1281,7 +1321,8 @@ var Binding;
                         }
                         wrapper.WebApi.Insert(newObject, function (result) {
                             if (listItem["InsertPosition"] && listItem["InsertPosition"] == "top") {
-                            } else {
+                            }
+                            else {
                                 unorderedList.DataObject.push(result);
                                 Binding.Grid.AddItem(unorderedList, result);
                                 Binding.Set.Updated(result, 0 /* Insert */, wrapper, null);
@@ -1307,12 +1348,14 @@ var Binding;
                         if (!Is.EmptyObject(dataBindings)) {
                             unorderedList.Wrapper.RowBinding = Binding.Get.Attributes(dataBindings);
                         }
-                    } else if (dataBindings.LineType && dataBindings.LineType == Binding.Grid.LineTypes.Header) {
+                    }
+                    else if (dataBindings.LineType && dataBindings.LineType == Binding.Grid.LineTypes.Header) {
                         lineItems[i]["LineType"] = dataBindings.LineType;
                         lineItems[i]["InsertPosition"] = dataBindings.InsertPosition;
                         Binding.Grid.HookInsertTemplate(lineItems[i], unorderedList);
                         unorderedList.Header = lineItems[i].outerHTML;
-                    } else if (dataBindings.LineType && dataBindings.LineType == Binding.Grid.LineTypes.Footer) {
+                    }
+                    else if (dataBindings.LineType && dataBindings.LineType == Binding.Grid.LineTypes.Footer) {
                         lineItems[i]["LineType"] = dataBindings.LineType;
                         lineItems[i]["InsertPosition"] = dataBindings.InsertPosition;
                         Binding.Grid.HookInsertTemplate(lineItems[i], unorderedList);
@@ -1350,8 +1393,7 @@ var Binding;
             return li;
         }
         Grid.GetListItem = GetListItem;
-    })(Binding.Grid || (Binding.Grid = {}));
-    var Grid = Binding.Grid;
+    })(Grid = Binding.Grid || (Binding.Grid = {}));
     function Load(element) {
         var json = element.getAttribute("data-loadbinding");
         element.Wrapper = new Binding.Wrapper(json);
@@ -1370,7 +1412,6 @@ var Binding;
                 if (Is.String(wrapper.GetParameter)) {
                     var fun = new Function(wrapper.GetParameter);
                     parameter = fun();
-
                     //should we do this?
                     fun = null;
                 }
@@ -1385,11 +1426,13 @@ var Binding;
                 if (wrapper.PrebindAction) {
                     var fun = new Function('exe', wrapper.PrebindAction + "(exe);");
                     fun(executeSelect);
-                } else {
+                }
+                else {
                     executeSelect();
                 }
             }
-        } else if (wrapper.PrebindAction) {
+        }
+        else if (wrapper.PrebindAction) {
             var fun = new Function('exe', wrapper.PrebindAction + "(exe);");
             fun(function () {
             });

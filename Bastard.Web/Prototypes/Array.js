@@ -30,7 +30,8 @@ Array.prototype.First = function (func) {
                 return this[firstFound];
             }
         }
-    } else if (this.length > 0) {
+    }
+    else if (this.length > 0) {
         return this[0];
     }
     return null;
@@ -52,7 +53,8 @@ Array.prototype.Last = function (func) {
                 pos--;
             }
         }
-    } else {
+    }
+    else {
         if (this.length > 0) {
             return this[this.length - 1];
         }
@@ -94,7 +96,8 @@ Array.prototype.Min = function (field) {
         if (obj[field]) {
             if (ret == null) {
                 ret = obj[field];
-            } else if (ret > obj[field]) {
+            }
+            else if (ret > obj[field]) {
                 ret = obj[field];
             }
         }
@@ -118,13 +121,13 @@ Array.prototype.Take = function (count) {
     for (var i = 0; i < count; i++) {
         if (this.length > i) {
             ret.push(this[i]);
-        } else {
+        }
+        else {
             break;
         }
     }
     return ret;
 };
-
 ///takes args as parameters array
 Array.prototype.Add = function (objectOrObjects) {
     if (!Is.Array(objectOrObjects)) {
@@ -134,12 +137,11 @@ Array.prototype.Add = function (objectOrObjects) {
         this.push(objectOrObjects[i]);
     }
 };
-
 ///takes args as parameters array
 Array.prototype.GroupBy = function () {
     var groupBy = [];
-    for (var _i = 0; _i < (arguments.length - 0); _i++) {
-        groupBy[_i] = arguments[_i + 0];
+    for (var _i = 0; _i < arguments.length; _i++) {
+        groupBy[_i - 0] = arguments[_i];
     }
     var ret = new Array();
     for (var i = 0; i < this.length; i++) {
@@ -163,14 +165,14 @@ Array.prototype.GroupBy = function () {
             }
             newObj.Grouping.push(that);
             ret.push(newObj);
-        } else {
+        }
+        else {
             found["Grouping"].push(that);
         }
     }
     return ret;
 };
-
-///If functionOrObject is object supply only fields necessary for match
+///If functionOrObject is object supply only fields necessary for match 
 Array.prototype.IndexOf = function (funcOrObj) {
     var i = -1;
     var isFunction = Is.Function(funcOrObj);
@@ -180,7 +182,8 @@ Array.prototype.IndexOf = function (funcOrObj) {
                 return i;
             }
         }
-    } else {
+    }
+    else {
         for (var i = 0; i < this.length; i++) {
             var match = true;
             for (var prop in funcOrObj) {
@@ -196,8 +199,7 @@ Array.prototype.IndexOf = function (funcOrObj) {
     }
     return i;
 };
-
-///obj - object to insert
+///obj - object to insert 
 ///position - where you want it in the array
 Array.prototype.Insert = function (obj, position) {
     if (position == undefined) {
@@ -208,8 +210,7 @@ Array.prototype.Insert = function (obj, position) {
     }
     this.splice(position, 0, obj);
 };
-
-///If functionOrObject is object supply only fields necessary for match
+///If functionOrObject is object supply only fields necessary for match 
 ///field - the field to sum against
 Array.prototype.Sum = function (field) {
     var ret = 0;
@@ -221,7 +222,6 @@ Array.prototype.Sum = function (field) {
     }
     return ret;
 };
-
 ///property is the property name of the object you want to return as an array
 Array.prototype.ToArray = function (property) {
     var ret = new Array();

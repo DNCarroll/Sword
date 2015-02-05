@@ -10,9 +10,11 @@ Window.prototype.Dimensions = function () {
     var temp = window;
     if (typeof temp.innerWidth != 'undefined') {
         ret.Width = temp.innerWidth, ret.Height = temp.innerHeight;
-    } else if (typeof document.documentElement != 'undefined' && typeof document.documentElement.clientWidth != 'undefined' && document.documentElement.clientWidth != 0) {
+    }
+    else if (typeof document.documentElement != 'undefined' && typeof document.documentElement.clientWidth != 'undefined' && document.documentElement.clientWidth != 0) {
         ret.Width = document.documentElement.clientWidth, ret.Height = document.documentElement.clientHeight;
-    } else {
+    }
+    else {
         ret.Width = document.getElementsByTagName('body')[0].clientWidth, ret.Height = document.getElementsByTagName('body')[0].clientHeight;
     }
     return ret;
@@ -21,9 +23,11 @@ Window.prototype.PushState = function (stateobj, title, url) {
     if (history && history.pushState) {
         if (Is.Array(url)) {
             url = "/" + url.join("/");
-        } else if (!url) {
+        }
+        else if (!url) {
             url = "/";
-        } else if (url.indexOf("/") != 0) {
+        }
+        else if (url.indexOf("/") != 0) {
             url = "/" + url;
         }
         history.pushState(stateobj, title, url);
@@ -44,7 +48,8 @@ Window.prototype.MousePosition = function (e) {
     if (event || e) {
         if (Is.InternetExplorer()) {
             return { X: event.clientX + document.body.scrollLeft, Y: event.clientY + document.body.scrollTop };
-        } else {
+        }
+        else {
             return { X: e.pageX, Y: e.pageY };
         }
     }
@@ -70,7 +75,8 @@ Window.prototype.SplitPathName = function (index) {
     var split = pathName.split("/");
     if (index > -1) {
         return split[index];
-    } else {
+    }
+    else {
         return split;
     }
     return null;
@@ -78,7 +84,8 @@ Window.prototype.SplitPathName = function (index) {
 Window.prototype.PageLoaded = function (postLoadFuntion, e) {
     if (document.readyState === "complete") {
         postLoadFuntion();
-    } else {
+    }
+    else {
         if (window.onload) {
             var curronload = window.onload;
             var newonload = function () {
@@ -86,7 +93,8 @@ Window.prototype.PageLoaded = function (postLoadFuntion, e) {
                 postLoadFuntion();
             };
             window.onload = newonload;
-        } else {
+        }
+        else {
             window.onload = function () {
                 postLoadFuntion();
             };
@@ -108,7 +116,8 @@ function WindowLoad(e) {
             Ajax.ProgressElement = pg;
         }
         autoBindForms();
-    } else {
+    }
+    else {
         if (window.onload) {
             var curronload = window.onload;
             var newonload = function () {
@@ -120,7 +129,8 @@ function WindowLoad(e) {
                 autoBindForms();
             };
             window.onload = newonload;
-        } else {
+        }
+        else {
             window.onload = function () {
                 var pg = document.getElementById("progress");
                 if (pg != null && Ajax) {

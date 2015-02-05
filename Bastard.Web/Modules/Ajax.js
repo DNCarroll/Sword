@@ -16,11 +16,12 @@ var Ajax;
             for (var i = 0; i < object.length; i++) {
                 var obj = object[i];
                 if (obj) {
-                    try  {
+                    try {
                         if (keyMap == null) {
                             keyMap = Ajax.getKeyMap(obj);
                         }
-                    } catch (e) {
+                    }
+                    catch (e) {
                         alert(e);
                     }
                     Ajax.setValues(obj, keyMap);
@@ -29,7 +30,8 @@ var Ajax;
                     Ajax.ConvertProperties(obj[prop]);
                 }
             }
-        } else if (Is.Object(object)) {
+        }
+        else if (Is.Object(object)) {
             var keyMap = getKeyMap(object);
             setValues(object, keyMap);
             for (var prop in object) {
@@ -50,9 +52,11 @@ var Ajax;
                 val = val.Trim();
                 if (val.indexOf("/Date(") == 0 || val.indexOf("Date(") == 0) {
                     keyMap.push({ Key: prop, Type: "Date" });
-                } else if (val.match(RegularExpression.UTCDate)) {
+                }
+                else if (val.match(RegularExpression.UTCDate)) {
                     keyMap.push({ Key: prop, Type: "UTCDate" });
-                } else if (val.match(RegularExpression.ZDate)) {
+                }
+                else if (val.match(RegularExpression.ZDate)) {
                     keyMap.push({ Key: prop, Type: "ZDate" });
                 }
             }
@@ -65,9 +69,11 @@ var Ajax;
             Ajax.HideProgress();
             if (xmlhttp.status == 404) {
                 failureMethod("404 file not found.");
-            } else if (xmlhttp.status == 500) {
+            }
+            else if (xmlhttp.status == 500) {
                 failureMethod("500 error.");
-            } else {
+            }
+            else {
                 failureMethod("Unhandled status:" + xmlhttp.status);
             }
         }
@@ -82,7 +88,8 @@ var Ajax;
                 for (var i = 0; i < Ajax.DisableElement.length; i++) {
                     Ajax.DisableElement[i].removeAttribute("disabled");
                 }
-            } else {
+            }
+            else {
                 Ajax.DisableElement.removeAttribute("disabled");
             }
         }
@@ -92,7 +99,7 @@ var Ajax;
         var returnMethod = function (response) {
             var ret = response;
             if (!isRaw && !Is.NullOrEmpty(ret)) {
-                try  {
+                try {
                     ret = JSON.parse(ret);
                     if (ret.d) {
                         ret = ret.d;
@@ -100,8 +107,8 @@ var Ajax;
                     if (Ajax.AutoConvert) {
                         Ajax.ConvertProperties(ret);
                     }
-                } catch (e) {
-                    //?
+                }
+                catch (e) {
                 }
             }
             if (target) {
@@ -110,20 +117,23 @@ var Ajax;
                     if (successMethod) {
                         successMethod();
                     }
-                } else if (target.tagName && target.tagName.toLowerCase() == "select") {
+                }
+                else if (target.tagName && target.tagName.toLowerCase() == "select") {
                     for (var i = 0; i < ret.length; i++) {
                         target.options[target.options.length] = new Option(ret[i].Text, ret[i].Value);
                     }
                     if (successMethod) {
                         successMethod(ret);
                     }
-                } else if (Is.Object(target)) {
+                }
+                else if (Is.Object(target)) {
                     Thing.Merge(ret, target);
                     if (successMethod) {
                         successMethod();
                     }
                 }
-            } else if (target == null && successMethod) {
+            }
+            else if (target == null && successMethod) {
                 successMethod(ret);
             }
         };
@@ -137,7 +147,6 @@ var Ajax;
         }
     }
     Ajax.Initialize = Initialize;
-
     //tighly coupled says that it expects the base controller path and not the extend /method
     function Insert(url, parameters, successMethod, failureMethod, target) {
         Ajax.HttpAction("POST", url, parameters, successMethod, failureMethod, target);
@@ -149,8 +158,8 @@ var Ajax;
     Ajax.Update = Update;
     function Resolver() {
         var subDirectories = [];
-        for (var _i = 0; _i < (arguments.length - 0); _i++) {
-            subDirectories[_i] = arguments[_i + 0];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            subDirectories[_i - 0] = arguments[_i];
         }
         var split = window.SplitPathName(0).toLowerCase();
         var host = window.location.href.replace(window.location.pathname, "");
@@ -167,7 +176,6 @@ var Ajax;
             var key = keyMap[j].Key;
             var type = keyMap[j].Type;
             var val = obj[key];
-
             switch (type) {
                 case "Date":
                     if (val) {
@@ -177,10 +185,12 @@ var Ajax;
                         if (val > -62135575200000) {
                             val = new Date(val);
                             obj[key] = val;
-                        } else {
+                        }
+                        else {
                             delete obj[key];
                         }
-                    } else {
+                    }
+                    else {
                         obj[key] = new Date();
                     }
                     break;
@@ -189,7 +199,8 @@ var Ajax;
                     var tempDate = new Date(val);
                     if (Ajax.UseAsDateUTC) {
                         tempDate = new Date(tempDate.getUTCFullYear(), tempDate.getUTCMonth(), tempDate.getUTCDate());
-                    } else if (Is.Chrome()) {
+                    }
+                    else if (Is.Chrome()) {
                         var offset = new Date().getTimezoneOffset();
                         tempDate = tempDate.Add(0, 0, 0, 0, offset);
                     }
@@ -210,7 +221,8 @@ var Ajax;
                 for (var i = 0; i < Ajax.DisableElement.length; i++) {
                     Ajax.DisableElement[i].setAttribute("disabled", "disabled");
                 }
-            } else {
+            }
+            else {
                 Ajax.DisableElement.setAttribute("disabled", "disabled");
             }
         }
@@ -227,7 +239,6 @@ var Ajax;
         if (url.indexOf("http") == -1 && Ajax.Host != "") {
             tempUrl = Ajax.Host + (url.indexOf("/") == 0 ? url : "/" + url);
         }
-
         // code for IE7+, Firefox, Chrome, Opera, Safari
         var xmlhttp = new XMLHttpRequest();
         if (xmlhttp) {
@@ -235,7 +246,8 @@ var Ajax;
                 if (xmlhttp.readyState == 4 && (xmlhttp.status == 200 || xmlhttp.status == 204)) {
                     Ajax.HideProgress();
                     returnMethod(xmlhttp.responseText);
-                } else {
+                }
+                else {
                     Ajax.HandleOtherStates(xmlhttp, failureMethod);
                 }
             };
@@ -243,7 +255,7 @@ var Ajax;
             if (contentType) {
                 xmlhttp.setRequestHeader("content-type", !Is.FireFox() ? contentType : "application/json;q=0.9");
             }
-            try  {
+            try {
                 if (parameters) {
                     if (contentType == "application/json; charset=utf-8") {
                         var JsonWParam = new Object();
@@ -256,19 +268,23 @@ var Ajax;
                         json = json.replace(/<script/ig, "");
                         json = json.replace(/script>/ig, "");
                         xmlhttp.send(json);
-                    } else {
+                    }
+                    else {
                         xmlhttp.send(parameters);
                     }
-                } else {
+                }
+                else {
                     xmlhttp.send();
                 }
-            } catch (e) {
+            }
+            catch (e) {
                 Ajax.HideProgress();
                 failureMethod(e.message);
             }
         }
     }
     Ajax.Submit = Submit;
+    var View;
     (function (View) {
         function Retrieve(url, callBack, error) {
             var stored = sessionStorage.getItem(url);
@@ -279,11 +295,11 @@ var Ajax;
                 }, function (result) {
                     error("Failed to retrieve html for " + url);
                 }, null, true);
-            } else {
+            }
+            else {
                 callBack(stored);
             }
         }
         View.Retrieve = Retrieve;
-    })(Ajax.View || (Ajax.View = {}));
-    var View = Ajax.View;
+    })(View = Ajax.View || (Ajax.View = {}));
 })(Ajax || (Ajax = {}));

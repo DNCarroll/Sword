@@ -52,21 +52,26 @@ var DialogProperties = (function () {
         if (hideInterval == null) {
             if (this.DialogType == 1 /* Popup */ || this.DialogType == 2 /* Quick */) {
                 this.HideInterval = Dialog.DefaultHideInterval;
-            } else {
+            }
+            else {
                 this.HideInterval = -1;
             }
-        } else {
+        }
+        else {
             this.HideInterval = hideInterval;
         }
         if (position != 100 /* Manual */) {
             if (position == null && this.Target == null) {
                 this.Position = 0 /* MiddleOfWindow */;
-            } else if (position == null && this.Target != null) {
+            }
+            else if (position == null && this.Target != null) {
                 this.Position = 1 /* Below */;
-            } else {
+            }
+            else {
                 this.Position = position;
             }
-        } else {
+        }
+        else {
             this.Position = 100 /* Manual */;
         }
     }
@@ -117,7 +122,8 @@ var Dialog;
         }
         if (modalClass == null) {
             Dialog.Show(container, 3 /* Standard */, target, null, position);
-        } else {
+        }
+        else {
             Dialog.Modal(container, modalClass, position, null, target);
         }
     }
@@ -148,7 +154,8 @@ var Dialog;
         }, okButton, 2 /* Ok */, container));
         if (containerClass != null) {
             container.className = containerClass;
-        } else {
+        }
+        else {
             setUL(container);
             setUL(ulDialogContainer);
             setLI(liTitle);
@@ -166,7 +173,8 @@ var Dialog;
         container.appendChild(liDialog);
         if (modalClass == null) {
             Dialog.Show(container, 3 /* Standard */, target, null, target == null ? 0 /* MiddleOfWindow */ : 1 /* Below */);
-        } else {
+        }
+        else {
             Dialog.Modal(container, modalClass, target == null ? 0 /* MiddleOfWindow */ : 1 /* Below */, null, target);
         }
     }
@@ -195,7 +203,6 @@ var Dialog;
             case 1 /* Anchor */:
                 button = "a".CreateElement({ innerHTML: dialogButton.Text.toString() });
                 break;
-
             case 0 /* InputButton */:
                 button = "input".CreateElement({ type: "button", value: dialogButton.Text.toString() });
                 break;
@@ -208,18 +215,17 @@ var Dialog;
             onclick(dialogResult);
             Dialog.Hide(container);
         };
-
         if (containerClass == null) {
             button.style.margin = ".5em .5em";
             if (dialogResult == 0 /* No */) {
                 button.style.cssFloat = "left";
-            } else {
+            }
+            else {
                 button.style.cssFloat = "right";
             }
         }
         return button;
     }
-
     Dialog.DefaultHideInterval = 1500;
     function Popup(elementToShow, target, position, hideInterval) {
         Show(elementToShow, 1 /* Popup */, target, hideInterval, position);
@@ -312,7 +318,8 @@ var Dialog;
         if (Is.String(obj)) {
             var temp = obj;
             ele = temp.E();
-        } else if (Is.Element(obj)) {
+        }
+        else if (Is.Element(obj)) {
             ele = obj;
         }
         if (ele) {
