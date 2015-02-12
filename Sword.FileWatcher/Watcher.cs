@@ -140,7 +140,7 @@ namespace Sword.File
         /// </summary>
         public void InsureRunning()
         {
-            if (this.watcher == null && !string.IsNullOrEmpty(this.directoryToWatch) || this.delayThread == null)
+            if (this.watcher == null && !string.IsNullOrEmpty(this.directoryToWatch))
             {
                 initiateWatcher();
             }
