@@ -3,14 +3,14 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if FULL
-using System.Data.SqlClient;
-#endif
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
+#if FULL
+using System.Data.SqlClient;
+#endif
 
 namespace Sword
 {
@@ -19,10 +19,6 @@ namespace Sword
     {
         object this[string property] { get; set; }
         string[] PropertyNames();
-#if FULL
-        void SetValues(object[] values, Dictionary<string, MapPoint> map);
-        void SetValues(System.Data.IDataReader reader, Dictionary<string, MapPoint> staticallyTypedMap, Dictionary<string, MapPoint> dynamicProperties);
-#endif
         string[] GetStaticallyTypedPropertyNames();
         bool HasProperty(string property);
         string Table { get; }
@@ -31,7 +27,12 @@ namespace Sword
         string[] SerializableProperties();
         void SetSerializableAndNotSerializable(out string[] serializable, out string[] notSerializable);
         Type GetPropertyType(string propertyName);
+        
+#if FULL
         IEnumerable<string> GetDynamicMemberNames();
+        void SetValues(object[] values, Dictionary<string, MapPoint> map);
+        void SetValues(System.Data.IDataReader reader, Dictionary<string, MapPoint> staticallyTypedMap, Dictionary<string, MapPoint> dynamicProperties);
+#endif
     }
 
     public abstract class SwordAbstract : DynamicObject, IDynamic
@@ -81,11 +82,7 @@ namespace Sword
         public virtual void SetValue(string property, object value)
         {
         }
-#if FULL
-        public virtual void SetValues(object[] values, Dictionary<string, MapPoint> map) { }
 
-        public virtual void SetValues(System.Data.IDataReader reader, Dictionary<string, MapPoint> map) { }
-#endif
         public virtual string[] GetStaticallyTypedPropertyNames()
         {
             return null;
@@ -200,6 +197,10 @@ namespace Sword
             }
             return ret.ToArray();
         }
+#if FULL
+        public virtual void SetValues(object[] values, Dictionary<string, MapPoint> map) { }
+
+        public virtual void SetValues(System.Data.IDataReader reader, Dictionary<string, MapPoint> map) { }
 
         public void SetValues(System.Data.IDataReader reader, Dictionary<string, MapPoint> staticallyTypedMap, Dictionary<string, MapPoint> dynamicProperties)
         {
@@ -209,7 +210,7 @@ namespace Sword
                 this[item.Key] = reader.GetValue(item.Value.Index);
             }
         }
-
+#endif
         public bool HasProperty(string property)
         {
             var properties = this.GetStaticallyTypedPropertyNames();
@@ -274,9 +275,10 @@ namespace Sword
                 this[item.Key] = item.Value;
             }
         }
-
         public void Dispose()
         {
+#if FULL
+        
             var props = this.PropertyNames();
             foreach (var item in props)
             {
@@ -285,10 +287,13 @@ namespace Sword
                 {
                     this[item] = null;
                 }
-            }
+            }        
+#endif
         }
     }
 
+
+#if FULL
     //update with try catches etc
     public class DynamicSwordConverter : JsonConverter
     {
@@ -446,5 +451,6 @@ namespace Sword
             }
         }
     }
+#endif
 
 }
