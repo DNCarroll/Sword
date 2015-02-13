@@ -3,9 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-#if FULL
 using System.Data.SqlClient;
-#endif
 using System.Dynamic;
 using System.Linq;
 using System.Reflection;
@@ -19,19 +17,17 @@ namespace Sword
     {
         object this[string property] { get; set; }
         string[] PropertyNames();
-#if FULL
         void SetValues(object[] values, Dictionary<string, MapPoint> map);
         void SetValues(System.Data.IDataReader reader, Dictionary<string, MapPoint> staticallyTypedMap, Dictionary<string, MapPoint> dynamicProperties);
-#endif
         string[] GetStaticallyTypedPropertyNames();
         bool HasProperty(string property);
         string Table { get; }
         string ObjectConnectionString { get; }
         string[] TableFields();
-        string[] SerializableProperties();
+        string[] SerializableProperties();        
         void SetSerializableAndNotSerializable(out string[] serializable, out string[] notSerializable);
         Type GetPropertyType(string propertyName);
-        IEnumerable<string> GetDynamicMemberNames();
+        IEnumerable<string> GetDynamicMemberNames();        
     }
 
     public abstract class SwordAbstract : DynamicObject, IDynamic
@@ -81,11 +77,11 @@ namespace Sword
         public virtual void SetValue(string property, object value)
         {
         }
-#if FULL
+
         public virtual void SetValues(object[] values, Dictionary<string, MapPoint> map) { }
 
         public virtual void SetValues(System.Data.IDataReader reader, Dictionary<string, MapPoint> map) { }
-#endif
+
         public virtual string[] GetStaticallyTypedPropertyNames()
         {
             return null;
@@ -170,7 +166,7 @@ namespace Sword
         }
 
 
-
+        
 
         /// <summary>
         /// Return all dynamic member names
@@ -223,7 +219,7 @@ namespace Sword
         }
 
         public virtual string[] SerializableProperties()
-        {
+        {   
             return new string[] {                
             };
         }
@@ -264,11 +260,11 @@ namespace Sword
         }
 
         public DynamicSword()
-        {
+        {          
         }
 
         public DynamicSword(Dictionary<string, object> properties)
-        {
+        {            
             foreach (KeyValuePair<string, object> item in properties)
             {
                 this[item.Key] = item.Value;
