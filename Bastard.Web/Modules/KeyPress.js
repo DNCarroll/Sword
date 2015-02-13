@@ -11,6 +11,7 @@ var KeyPress;
     KeyPress.ADCONTROL_SEVEN = 55;
     KeyPress.ADCONTROL_EIGHT = 56;
     KeyPress.ADCONTROL_NINE = 57;
+
     function GetZeroLengthString(value) {
         switch (value) {
             case 1:
@@ -21,41 +22,40 @@ var KeyPress;
         }
     }
     KeyPress.GetZeroLengthString = GetZeroLengthString;
+
     function GetOneLengthString(value, currentValue) {
         if (currentValue == 0) {
             return "0" + String(value) + "/";
-        }
-        else {
+        } else {
             if (value > 3) {
                 return "01/0" + String(value) + "/";
-            }
-            else if (value == 3) {
+            } else if (value == 3) {
                 return "01/3";
-            }
-            else {
+            } else {
                 return "1" + String(value) + "/";
             }
         }
     }
     KeyPress.GetOneLengthString = GetOneLengthString;
+
     function GetThreeLengthString(value, currentValue) {
         if (value > 3) {
             return currentValue + "0" + String(value) + "/";
-        }
-        else {
+        } else {
             return currentValue + String(value);
         }
     }
     KeyPress.GetThreeLengthString = GetThreeLengthString;
+
     function GetFourLengthString(value, currentValue, previousValue) {
         if (previousValue == 3 && value > 1) {
             return String(currentValue).substring(0, String(currentValue).length - 1) + "03/" + String(value);
-        }
-        else {
+        } else {
             return currentValue + value + "/";
         }
     }
     KeyPress.GetFourLengthString = GetFourLengthString;
+
     function NoBlanks(e, canSpecialCharacter) {
         var ret = true;
         var KeyID = null;
@@ -66,13 +66,14 @@ var KeyPress;
             sender = window.event.srcElement;
             shiftKey = window.event.shiftKey;
             e = window.event;
-        }
-        else if (e) {
+        } else if (e) {
             KeyID = e.which;
             sender = e.srcElement;
             shiftKey = e.shiftKey;
         }
+
         var keyChar = String.fromCharCode(KeyID);
+
         if (!canSpecialCharacter) {
             var regex = /[a-z0-9]/gi;
             var test = regex.test(keyChar);
@@ -80,17 +81,18 @@ var KeyPress;
                 ret = false;
                 e.cancel = true;
             }
-        }
-        else if (keyChar == " ") {
+        } else if (keyChar == " ") {
             ret = false;
             e.cancel = true;
         }
+
         if (window.event) {
             e.returnValue = ret;
         }
         return ret;
     }
     KeyPress.NoBlanks = NoBlanks;
+
     function ShortDate(e) {
         var KeyID = null;
         var sender = null;
@@ -99,12 +101,12 @@ var KeyPress;
             KeyID = window.event.keyCode;
             sender = window.event.srcElement;
             shiftKey = window.event.shiftKey;
-        }
-        else if (e) {
+        } else if (e) {
             KeyID = e.which;
             sender = e.srcElement;
             shiftKey = e.shiftKey;
         }
+
         //hook up events to it
         if (!sender.onclick) {
             sender.onclick = function (e) {
@@ -121,24 +123,27 @@ var KeyPress;
             sender.onblur = function () {
                 if (sender.value.length == 0)
                     return;
+
                 if (sender.value.length == 8) {
                     var lastTwo = sender.value.substring(6, 8);
                     if (lastTwo.indexOf("9") == 0) {
                         sender.value = sender.value.substring(0, 6) + "19" + lastTwo;
-                    }
-                    else {
+                    } else {
                         sender.value = sender.value.substring(0, 6) + "20" + lastTwo;
                     }
                 }
+
                 if (!Is.ValidDate(sender.value)) {
                     alert("Please enter a valid date.");
                     sender.focus();
                 }
             };
         }
+
         var keyChar = String.fromCharCode(KeyID);
         var ret = true;
         var length = sender.value.length;
+
         if (KeyID >= KeyPress.ADCONTROL_ZERO && KeyID <= KeyPress.ADCONTROL_NINE) {
             if (sender.value.length == 10) {
                 sender.value = "";
@@ -169,8 +174,7 @@ var KeyPress;
                 event.returnValue = ret;
             }
             return ret;
-        }
-        else if (KeyID == 13) {
+        } else if (KeyID == 13) {
             if (sender.tabIndex) {
                 var ti = parseInt(sender.tabIndex) + 1;
                 var elements = document.getElementsByTagName('*');
@@ -185,12 +189,12 @@ var KeyPress;
                     }
                 }
             }
-        }
-        else {
+        } else {
             return false;
         }
     }
     KeyPress.ShortDate = ShortDate;
+
     function Number(e, allowDecimals, useTabForward) {
         var key = null;
         var sender = null;
@@ -199,16 +203,17 @@ var KeyPress;
             key = window.event.keyCode;
             sender = window.event.srcElement;
             shiftKey = window.event.shiftKey;
-        }
-        else if (e) {
+        } else if (e) {
             key = e.which;
             sender = e.srcElement;
             shiftKey = e.shiftKey;
         }
+
         var keyChar = String.fromCharCode(key);
         var ret = true;
         var length = sender.value.length;
         var containsDecimal = sender.value.indexOf(".") > -1;
+
         if (key == 13) {
             if (sender.tabIndex && useTabForward) {
                 var ti = parseInt(sender.tabIndex) + 1;
@@ -224,37 +229,31 @@ var KeyPress;
                     }
                 }
             }
-        }
-        else if (key >= 48 && key <= 57) {
+        } else if (key >= 48 && key <= 57) {
             ret = true;
-        }
-        else if (keyChar == "." && allowDecimals) {
+        } else if (keyChar == "." && allowDecimals) {
             if (sender.value.indexOf(".") > -1) {
                 var txt = '';
                 if (window.getSelection) {
                     txt = window.getSelection().toString();
-                }
-                else if (document.getSelection) {
+                } else if (document.getSelection) {
                     txt = document.getSelection().toString();
-                }
-                else if (document.selection) {
+                } else if (document.selection) {
                     txt = document.selection.createRange().text;
                 }
+
                 if (txt.length != sender.value.length) {
                     ret = false;
                 }
             }
-        }
-        else if (keyChar == "." && !allowDecimals) {
+        } else if (keyChar == "." && !allowDecimals) {
             ret = false;
-        }
-        else {
+        } else {
             if (keyChar == "-") {
                 if (sender.value != "") {
                     ret = false;
                 }
-            }
-            else {
+            } else {
                 ret = false;
             }
         }

@@ -15,8 +15,7 @@ HTMLElement.prototype.SetSelected = function (obj) {
 HTMLElement.prototype.Bind = function (data, appendData) {
     if (data) {
         Bind(this, data, appendData);
-    }
-    else {
+    } else {
         Binding.Load(this);
     }
 };
@@ -25,37 +24,36 @@ HTMLElement.prototype.Set = function (objectProperties) {
     if (objectProperties) {
         for (var prop in objectProperties) {
             var tempPropName = prop;
+
             if (tempPropName != "cls" && tempPropName != "className") {
                 var isStyleProp = Is.Style(tempPropName);
                 if (isStyleProp) {
                     that.style[tempPropName] = objectProperties[prop];
-                }
-                else if (prop == "style") {
+                } else if (prop == "style") {
                     if (objectProperties.style.cssText) {
                         that.style.cssText = objectProperties.style.cssText;
                     }
-                }
-                else {
+                } else {
                     that[tempPropName] = objectProperties[prop];
                 }
-            }
-            else {
+            } else {
                 that.SetClass(objectProperties[prop]);
             }
         }
     }
     return that;
 };
+
 ///Add listener event to the Element
 HTMLElement.prototype.AddListener = function (eventName, method) {
     if (this.addEventListener) {
         this.addEventListener(eventName, method);
-    }
-    else {
+    } else {
         this.attachEvent(eventName, method);
     }
 };
-///clears all matching descendants from the predicate 
+
+///clears all matching descendants from the predicate
 ///predicate returns bool accepts one arg (element)
 HTMLElement.prototype.Clear = function (predicate, notRecursive) {
     var that = this;
@@ -64,26 +62,24 @@ HTMLElement.prototype.Clear = function (predicate, notRecursive) {
         while (children.length > 0) {
             that.removeChild(children[0]);
         }
-    }
-    else {
+    } else {
         var pos = children.length - 1;
         while (pos > 0) {
             if (children[pos].nodeType == 1) {
                 var child = children[pos];
                 if (predicate(child)) {
                     that.removeChild(child);
-                }
-                else if (!notRecursive && child.Clear) {
+                } else if (!notRecursive && child.Clear) {
                     child.Clear(predicate, notRecursive);
                 }
-            }
-            else {
+            } else {
                 that.removeChild(children[pos]);
             }
             pos--;
         }
     }
 };
+
 ///predicate is bool return function that operates with a Parameter of element
 ///assumes First element found is only one to delete
 HTMLElement.prototype.Delete = function (predicate) {
@@ -93,11 +89,12 @@ HTMLElement.prototype.Delete = function (predicate) {
         found.Remove();
     }
 };
+
 ///add range of elements to Element
 HTMLElement.prototype.AddRange = function () {
     var elements = [];
-    for (var _i = 0; _i < arguments.length; _i++) {
-        elements[_i - 0] = arguments[_i];
+    for (var _i = 0; _i < (arguments.length - 0); _i++) {
+        elements[_i] = arguments[_i + 0];
     }
     var that = this;
     for (var i = 0; i < elements.length; i++) {
@@ -121,6 +118,7 @@ HTMLElement.prototype.DimAndOff = function () {
     ret.Left = pos.left;
     return ret;
 };
+
 //returns { width: number; height: number; } for element
 HTMLElement.prototype.Dimensions = function () {
     var ret = { width: 0, height: 0 };
@@ -128,6 +126,7 @@ HTMLElement.prototype.Dimensions = function () {
     ret.height = this.offsetHeight;
     return ret;
 };
+
 ///return { top: number; left: number; } for Element
 HTMLElement.prototype.OffSet = function () {
     var _x = 0;
@@ -136,29 +135,32 @@ HTMLElement.prototype.OffSet = function () {
     while (el && !isNaN(el.offsetLeft) && !isNaN(el.offsetTop)) {
         _x += el.offsetLeft - el.scrollLeft;
         _y += el.offsetTop - el.scrollTop;
+
         //may not work
         el = el.offsetParent;
     }
     return { top: _y, left: _x };
 };
+
 ///returns first parent ancestor that produces true from the predicate function
 //predicate returns bool and takes one arg
 HTMLElement.prototype.Parent = function (predicate) {
     if (predicate(this.parentNode)) {
         return this.parentNode;
-    }
-    else {
+    } else {
         return this.parentNode.Parent(predicate);
     }
     return null;
 };
+
 ///clears and sets class on Element
 HTMLElement.prototype.SetClass = function (className) {
     this.className = null;
     this.className = className;
 };
+
 ///functionOrObject - function or object used to find matching child elements of the Element
-///notRecursive - default false, if true will only go one child deep otherwise dives all descendants,  
+///notRecursive - default false, if true will only go one child deep otherwise dives all descendants,
 ///dont supply nodes, its used for recursive additions on descendants
 HTMLElement.prototype.Get = function (func, notRecursive, nodes) {
     if (nodes == null) {
@@ -179,10 +181,12 @@ HTMLElement.prototype.Get = function (func, notRecursive, nodes) {
     }
     return nodes;
 };
+
 ///just removes child
 HTMLElement.prototype.Remove = function () {
     this.parentNode.removeChild(this);
 };
+
 ///functionOrObject - function or object used to find first matching child element of the Element
 HTMLElement.prototype.First = function (func) {
     var that = this;

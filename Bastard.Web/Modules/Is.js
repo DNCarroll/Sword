@@ -11,10 +11,9 @@ var Is;
     }
     Is.Json = Json;
     function Property(property, inObject) {
-        try {
+        try  {
             return typeof (inObject[property]) !== 'undefined';
-        }
-        catch (e) {
+        } catch (e) {
         }
         return false;
     }
@@ -31,23 +30,23 @@ var Is;
     }
     Is.Boolean = Boolean;
     function ValidDate(value) {
-        try {
+        try  {
             if (Object.prototype.toString.call(value) === "[object Date]") {
                 if (isNaN(value.getTime())) {
                     return false;
-                }
-                else {
+                } else {
                     return true;
                 }
-            }
-            else if (String(value)) {
+            } else if (String(value)) {
                 var objDate = new Date(value);
+
                 //what was doing
                 //var objDate = new Date(Date.parse(value));
                 var parts = value.split("/");
                 var year = parseInt(parts[2]);
                 var month = parseInt(parts[0].indexOf("0") == 0 ? parts[0].substring(1) : parts[0]);
                 var day = parseInt(parts[1].indexOf("0") == 0 ? parts[1].substring(1) : parts[1]);
+
                 if (objDate.getFullYear() != year)
                     return false;
                 if (objDate.getMonth() != month - 1)
@@ -56,8 +55,7 @@ var Is;
                     return false;
                 return true;
             }
-        }
-        catch (e) {
+        } catch (e) {
         }
         return false;
     }
@@ -78,25 +76,23 @@ var Is;
     function EnumValueContainedIn(source, value, zeroNotAllowed) {
         if (source == value) {
             return true;
-        }
-        else if (value > source) {
+        } else if (value > source) {
             return false;
-        }
-        else if (value == 0 && !zeroNotAllowed) {
+        } else if (value == 0 && !zeroNotAllowed) {
             return true;
         }
         var flagArray = [0, 1];
         while (source >= flagArray[flagArray.length - 1]) {
             flagArray.push(flagArray[flagArray.length - 1] * 2);
         }
+
         //remove the last one becuase its large than source
         flagArray.splice(flagArray.length - 1, 1);
         var ret = false;
         while (!ret && value <= flagArray[flagArray.length - 1]) {
             if (value == flagArray[flagArray.length - 1]) {
                 ret = true;
-            }
-            else {
+            } else {
                 source -= flagArray[flagArray.length - 1];
                 while (flagArray[flagArray.length - 1] > source) {
                     flagArray.splice(flagArray.length - 1, 1);
@@ -137,8 +133,7 @@ var Is;
     function NullOrEmpty(value) {
         if (value == null) {
             return true;
-        }
-        else if (value.length == 0) {
+        } else if (value.length == 0) {
             return true;
         }
     }

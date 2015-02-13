@@ -52,17 +52,16 @@ var Thing;
     function GetValueIn(object, forPropertyName, defaultValue) {
         if (object[forPropertyName]) {
             return object[forPropertyName];
-        }
-        else if (defaultValue) {
+        } else if (defaultValue) {
             return defaultValue;
         }
         return null;
     }
     Thing.GetValueIn = GetValueIn;
 })(Thing || (Thing = {}));
+
 var What;
 (function (What) {
-    var Is;
     (function (Is) {
         function EnumName(inObject, forValue) {
             for (var prop in inObject) {
@@ -82,5 +81,6 @@ var What;
             return null;
         }
         Is.EnumValue = EnumValue;
-    })(Is = What.Is || (What.Is = {}));
+    })(What.Is || (What.Is = {}));
+    var Is = What.Is;
 })(What || (What = {}));

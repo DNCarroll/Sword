@@ -26,6 +26,7 @@ var ViewManager;
     })();
     ViewManager.Liason = Liason;
     ;
+
     var View = (function () {
         function View(key, parameters, liason) {
             this.Key = key;
@@ -34,7 +35,7 @@ var ViewManager;
             //can find liason by key
         }
         View.prototype.Show = function () {
-            //get the html 
+            //get the html
             //set the ViewContainer inner html
             var url = "ViewKey" + this.Key.toString();
             var found = sessionStorage.getItem(url);
@@ -49,8 +50,7 @@ var ViewManager;
                     }
                 }, function (result) {
                 });
-            }
-            else {
+            } else {
                 this.SetHTML(found, this.Liason, this);
             }
         };
@@ -83,11 +83,14 @@ var ViewManager;
     ViewManager.Initialize = Initialize;
     function AddLiasons(liasions) {
         liasions.forEach(function (l) {
-            Cache.Remove(function (l2) { return l2.Key == l.Key; });
+            Cache.Remove(function (l2) {
+                return l2.Key == l.Key;
+            });
             Cache.Add(l);
         });
     }
     ViewManager.AddLiasons = AddLiasons;
+
     //    Loaded: (View) => void;
     //ViewUrl: string;
     function InitializeByConvention(url, urlTitle, pageTitle, viewContainer, conventionLiasons, postLoaded) {
@@ -104,6 +107,7 @@ var ViewManager;
         window.addEventListener("popstate", ViewManager.BackEvent);
     }
     ViewManager.InitializeByConvention = InitializeByConvention;
+
     function BackEvent(e) {
         if (ViewManager.Views.length > 1) {
             ViewManager.Views.splice(ViewManager.Views.length - 1, 1);
@@ -114,8 +118,8 @@ var ViewManager;
                 return o.Key == viewInfo.Key;
             });
             viewInfo.Show();
-        }
-        else {
+        } else {
+            //do nothing?
         }
     }
     ViewManager.BackEvent = BackEvent;

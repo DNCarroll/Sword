@@ -16,6 +16,7 @@ var Accordion;
     Accordion.Hook = Hook;
     function MaximumClass(ele, parentRule) {
         var className = parentRule + " input:checked ~ article.Max" + ele.id;
+
         //find does it already exists
         //yes? then mod it to be like this one
         var style = null;

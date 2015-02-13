@@ -23,8 +23,7 @@ var Calendar;
                         previousDate.className = format;
                     }
                     calendar.SelectedDateControl = div;
-                }
-                else {
+                } else {
                     calendar.RequestedDate = div.Date;
                     calendar.MonthChanged = true;
                     calendar.MonthChangeEvent(div.Date, calendar.MonthChangedCallBack);
@@ -49,19 +48,16 @@ var Calendar;
         Thing.Merge(cellProps, div);
         if (elementArrayOrString && elementArrayOrString.substring) {
             div.innerHTML = elementArrayOrString;
-        }
-        else if (Is.Array(elementArrayOrString)) {
+        } else if (Is.Array(elementArrayOrString)) {
             for (var i = 0; i < elementArrayOrString.length; i++) {
                 var sub = elementArrayOrString[i];
                 if (Is.String(sub)) {
                     div.appendChild("span".CreateElement({ innerHTML: sub }));
-                }
-                else if (Is.Element(sub)) {
+                } else if (Is.Element(sub)) {
                     div.appendChild(sub);
                 }
             }
-        }
-        else if (Is.Element(elementArrayOrString)) {
+        } else if (Is.Element(elementArrayOrString)) {
             div.appendChild(elementArrayOrString);
         }
         return div;
@@ -109,6 +105,7 @@ var Calendar;
         return li;
     }
     Calendar.YearItem = YearItem;
+
     function Create(element, selectedDateChanged, formatCellMethod, monthChangeEvent, headerClass, rowsClass, dayOfWeekClass, dateRowClass, monthClass, yearClass, navigateClass, defaultDateClass, monthPopupClass, yearPopupClass, calendarBuiltEvent) {
         if (!element.SelectedDate) {
             element.SelectedDate = new Date().SmallDate();
@@ -143,8 +140,7 @@ var Calendar;
             element.SelectedDate = selectedDate;
             if (rebuild) {
                 element.Build();
-            }
-            else {
+            } else {
                 var selectedDateControl = element.First(function (obj) {
                     return obj.tagName.toLowerCase() == "div" && obj.Date && obj.Date.Equals(selectedDate);
                 });
@@ -168,8 +164,7 @@ var Calendar;
                 if (element.MonthChangeEvent) {
                     element.MonthChanged = true;
                     element.MonthChangeEvent(element.RequestedDate, element.MonthChangedCallBack);
-                }
-                else {
+                } else {
                     element.Set(element.RequestedDate);
                 }
             }
@@ -186,8 +181,7 @@ var Calendar;
                 if (element.MonthChangeEvent) {
                     element.MonthChanged = true;
                     element.MonthChangeEvent(element.RequestedDate, element.MonthChangedCallBack);
-                }
-                else {
+                } else {
                     element.Set(element.RequestedDate);
                 }
             }
@@ -206,8 +200,7 @@ var Calendar;
                 if (requestmonth == 0) {
                     requestyear--;
                     requestmonth = 11;
-                }
-                else {
+                } else {
                     requestmonth--;
                 }
                 element.RequestedDate = new Date(requestyear, requestmonth, element.SelectedDate.getDate());
@@ -217,8 +210,7 @@ var Calendar;
                 if (element.MonthChangeEvent) {
                     element.MonthChanged = true;
                     element.MonthChangeEvent(element.RequestedDate, element.MonthChangedCallBack);
-                }
-                else {
+                } else {
                     element.Set(element.RequestedDate);
                 }
             };
@@ -229,8 +221,7 @@ var Calendar;
                 if (requestmonth == 11) {
                     requestmonth = 0;
                     requestyear++;
-                }
-                else {
+                } else {
                     requestmonth++;
                 }
                 element.RequestedDate = new Date(requestyear, requestmonth, element.SelectedDate.getDate());
@@ -240,8 +231,7 @@ var Calendar;
                 if (element.MonthChangeEvent) {
                     element.MonthChanged = true;
                     element.MonthChangeEvent(element.RequestedDate, element.MonthChangedCallBack);
-                }
-                else {
+                } else {
                     element.Set(element.RequestedDate);
                 }
             };
@@ -255,8 +245,7 @@ var Calendar;
                 var ulMonths = "ul".CreateElement({ id: "workoutMonthpopup", Target: month });
                 if (element.MonthPopupClass) {
                     ulMonths.className = element.MonthPopupClass;
-                }
-                else {
+                } else {
                     ulMonths.Set(Calendar.Format.Table);
                 }
                 for (var i = 0; i < months.length; i++) {
@@ -278,8 +267,7 @@ var Calendar;
                     years.push(currentyear - 2);
                     years.push(currentyear - 1);
                     years.push(currentyear - 0);
-                }
-                else {
+                } else {
                     var diff = currentyear - selectedYear;
                     if (diff > 1) {
                         years.push(selectedYear - 2);
@@ -287,8 +275,7 @@ var Calendar;
                         years.push(selectedYear);
                         years.push(selectedYear + 1);
                         years.push(selectedYear + 2);
-                    }
-                    else {
+                    } else {
                         years.push(selectedYear - 3);
                         years.push(selectedYear - 2);
                         years.push(selectedYear - 1);
@@ -299,8 +286,7 @@ var Calendar;
                 var ulYears = "ul".CreateElement({ id: "workoutYearpopup", Target: year });
                 if (element.YearPopupClass) {
                     ulYears.className = element.YearPopupClass;
-                }
-                else {
+                } else {
                     ulYears.Set(Calendar.Format.Table);
                 }
                 for (var i = 0; i < years.length; i++) {
@@ -315,6 +301,7 @@ var Calendar;
                 year.className = element.YearClass;
             }
             var headerRow = "li".CreateElement(Calendar.Format.Row);
+
             header.appendChild(headerRow);
             headerRow.AddRange(Calendar.HeaderCell(left), Calendar.HeaderCell([month, year]), Calendar.HeaderCell(right));
             element.appendChild(header);
@@ -328,11 +315,13 @@ var Calendar;
             var startDate = new Date(element.SelectedDate.getFullYear(), element.SelectedDate.getMonth(), 1);
             var week = "li".CreateElement(Calendar.Format.Row);
             daysContainer.appendChild(week);
+
             if (element.DayOfWeekClass) {
                 week.className = element.DayOfWeekClass;
             }
             week.AddRange(Calendar.HeaderCell("Su"), Calendar.HeaderCell("M"), Calendar.HeaderCell("T"), Calendar.HeaderCell("W"), Calendar.HeaderCell("Th"), Calendar.HeaderCell("F"), Calendar.HeaderCell("Sa"));
             week = "li".CreateElement(Calendar.Format.Row);
+
             var dow = startDate.getDay();
             if (dow != 0) {
                 startDate = startDate.AddDays(dow * -1);
