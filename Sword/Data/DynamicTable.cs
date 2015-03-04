@@ -122,7 +122,7 @@ namespace Sword
             {
                 if (!string.IsNullOrEmpty(this.ConnectionString()) && !string.IsNullOrEmpty(this.Name))
                 {
-                    using (var conn = new SqlConnection(this.ConnectionString()))
+                    using (var conn = new SqlConnection(Data.ConnectionStringTimeout(Data.ConnectionStringTimeout(this.ConnectionString()))))
                     {
                         using (var cmd = new SqlCommand(identityCommandText(), conn))
                         {
@@ -168,7 +168,7 @@ namespace Sword
                 if (!string.IsNullOrEmpty(this.ConnectionString()) && !string.IsNullOrEmpty(this.Name))
                 {
 
-                    using (var conn = new SqlConnection(this.ConnectionString()))
+                    using (var conn = new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())))
                     {
                         using (var cmd = new SqlCommand(pkCommandText(), conn))
                         {
@@ -214,7 +214,7 @@ namespace Sword
             {
                 if (!string.IsNullOrEmpty(this.ConnectionString()) && !string.IsNullOrEmpty(this.Name))
                 {
-                    using (var conn = new SqlConnection(this.ConnectionString()))
+                    using (var conn = new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())))
                     {
                         using (var cmd = new SqlCommand(rqCommandText(), conn))
                         {
@@ -257,7 +257,7 @@ namespace Sword
                 if (!string.IsNullOrEmpty(this.ConnectionString()) && !string.IsNullOrEmpty(this.Name))
                 {
 
-                    using (var conn = new SqlConnection(this.ConnectionString()))
+                    using (var conn = new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())))
                     {
                         using (var cmd = new SqlCommand(fieldsCommandText(), conn))
                         {
@@ -307,7 +307,7 @@ namespace Sword
                 if (!string.IsNullOrEmpty(this.ConnectionString()) && !string.IsNullOrEmpty(this.Name))
                 {
 
-                    using (var conn = new SqlConnection(this.ConnectionString()))
+                    using (var conn = new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())))
                     {
                         var cmdText = "SELECT COLUMN_NAME AS TableName, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = '" + this.Name + "'";
                         using (var cmd = new SqlCommand(cmdText, conn))
@@ -375,7 +375,7 @@ namespace Sword
                 {
                     string deleteStatement = "DELETE FROM " + this.FullName() + " WHERE " +
                         (string.Join(" AND ", properties.Select(s => s + " = @" + s).ToArray()));
-                    using (var conn = new System.Data.SqlClient.SqlConnection(this.ConnectionString()))
+                    using (var conn = new System.Data.SqlClient.SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())))
                     {
                         using (var cmd = new System.Data.SqlClient.SqlCommand(deleteStatement, conn))
                         {
@@ -460,7 +460,7 @@ namespace Sword
                     }
                 }
 
-                var conn = new System.Data.SqlClient.SqlConnection(this.ConnectionString());
+                var conn = new System.Data.SqlClient.SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString()));
                 conn.Open();
                 using (SqlTransaction transaction = conn.BeginTransaction())
                 {
@@ -507,7 +507,7 @@ namespace Sword
 
                 }
             }
-            var cmd = new SqlCommand(sb.ToString(), new SqlConnection(this.ConnectionString()));
+            var cmd = new SqlCommand(sb.ToString(), new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())));
             if (parameterNames != null)
             {
                 cmd.Parameters.AddRange(parameterNames.Select(s => new SqlParameter { ParameterName = "@" + s, SourceColumn = s }).ToArray());
@@ -542,7 +542,7 @@ namespace Sword
 
                 }
             }
-            var cmd = new SqlCommand(sb.ToString(), new SqlConnection(this.ConnectionString()));
+            var cmd = new SqlCommand(sb.ToString(), new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())));
             if (parameterNames != null)
             {
                 cmd.Parameters.AddRange(parameterNames.Select(s => new SqlParameter { ParameterName = "@" + s, SourceColumn = s }).ToArray());
@@ -575,7 +575,7 @@ namespace Sword
 
                 }
             }
-            var cmd = new SqlCommand(sb.ToString(), new SqlConnection(this.ConnectionString()));
+            var cmd = new SqlCommand(sb.ToString(), new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())));
             if (parameterNames != null)
             {
                 cmd.Parameters.AddRange(parameterNames.Select(s => new SqlParameter { ParameterName = "@" + s, SourceColumn = s }).ToArray());
@@ -611,7 +611,7 @@ namespace Sword
 
                     }
                 }
-                var cmd = new SqlCommand(sb.ToString(), new SqlConnection(this.ConnectionString()));
+                var cmd = new SqlCommand(sb.ToString(), new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())));
                 if (parameterNames != null)
                 {
                     cmd.Parameters.AddRange(parameterNames.Select(s => new SqlParameter { ParameterName = "@" + s, SourceColumn = s }).ToArray());
@@ -648,7 +648,7 @@ namespace Sword
 
                     }
                 }
-                var cmd = new SqlCommand(sb.ToString(), new SqlConnection(this.ConnectionString()));
+                var cmd = new SqlCommand(sb.ToString(), new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())));
                 if (parameterNames != null)
                 {
                     cmd.Parameters.AddRange(parameterNames.Select(s => new SqlParameter { ParameterName = "@" + s, SourceColumn = s }).ToArray());
@@ -685,7 +685,7 @@ namespace Sword
 
                     }
                 }
-                var cmd = new SqlCommand(sb.ToString(), new SqlConnection(this.ConnectionString()));
+                var cmd = new SqlCommand(sb.ToString(), new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())));
                 if (parameterNames != null)
                 {
                     cmd.Parameters.AddRange(parameterNames.Select(s => new SqlParameter { ParameterName = "@" + s, SourceColumn = s }).ToArray());
@@ -720,7 +720,7 @@ namespace Sword
 
                 }
             }
-            var cmd = new SqlCommand(sb.ToString(), new SqlConnection(this.ConnectionString()));
+            var cmd = new SqlCommand(sb.ToString(), new SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())));
             if (parameterNames != null)
             {
                 cmd.Parameters.AddRange(parameterNames.Select(s => new SqlParameter { ParameterName = "@" + s, SourceColumn = s }).ToArray());
@@ -735,7 +735,7 @@ namespace Sword
             string updateStatement = updateString(obj, obj.PropertyNames(), out parameters, this);
             if (parameters.Count > 1)
             {
-                using (var conn = new System.Data.SqlClient.SqlConnection(this.ConnectionString()))
+                using (var conn = new System.Data.SqlClient.SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())))
                 {
                     using (var cmd = new System.Data.SqlClient.SqlCommand(updateStatement, conn))
                     {
@@ -766,7 +766,7 @@ namespace Sword
             string insertStatement = insertString(obj, obj.PropertyNames(), out parameters, this);
             if (parameters.Count > 1)
             {
-                using (var conn = new System.Data.SqlClient.SqlConnection(this.ConnectionString()))
+                using (var conn = new System.Data.SqlClient.SqlConnection(Data.ConnectionStringTimeout(this.ConnectionString())))
                 {
                     using (var cmd = new System.Data.SqlClient.SqlCommand(insertStatement, conn))
                     {

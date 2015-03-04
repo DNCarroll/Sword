@@ -77,7 +77,8 @@ namespace Sword
             }
             set
             {
-                _command.Connection = new System.Data.SqlClient.SqlConnection(value.ConnectionString);
+                var connectionString = Data.ConnectionStringTimeout(value.ConnectionString);
+                _command.Connection = new System.Data.SqlClient.SqlConnection(connectionString);
             }
         }
 

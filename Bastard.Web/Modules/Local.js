@@ -5,9 +5,10 @@ var Local;
 (function (Local) {
     Local.Dictionary = {};
     function CanStore() {
-        try  {
+        try {
             return localStorage ? true : false;
-        } catch (e) {
+        }
+        catch (e) {
             return false;
         }
     }
@@ -35,19 +36,21 @@ var Local;
     }
     Local.Save = Save;
     function Get(key, defaultObject) {
-        try  {
+        try {
             var temp = null;
             var found = Local.Dictionary[key];
             if (found) {
                 temp = found;
-            } else if (!temp && Local.CanStore()) {
+            }
+            else if (!temp && Local.CanStore()) {
                 if (Is.Property(key, localStorage)) {
                     temp = localStorage.getItem(key);
                 }
                 if (Is.Json(temp)) {
                     temp = JSON.parse(temp);
                     Ajax.ConvertProperties(temp);
-                } else if (defaultObject) {
+                }
+                else if (defaultObject) {
                     temp = defaultObject;
                 }
             }
@@ -55,7 +58,8 @@ var Local;
                 Local.Dictionary[key] = temp;
             }
             return temp;
-        } catch (e) {
+        }
+        catch (e) {
             throw e;
         }
     }

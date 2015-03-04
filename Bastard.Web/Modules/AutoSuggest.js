@@ -8,7 +8,8 @@ var AutoSuggest;
             key = window.event.keyCode;
             sender = window.event.srcElement;
             shiftKey = window.event.shiftKey;
-        } else if (e) {
+        }
+        else if (e) {
             key = e.which;
             sender = e.srcElement;
             shiftKey = e.shiftKey;
@@ -17,7 +18,8 @@ var AutoSuggest;
         var value = sender.value ? sender.value : "";
         if (key != 8) {
             value += String.fromCharCode(key);
-        } else {
+        }
+        else {
             value = value.substring(0, value.length - 1);
         }
         if (!shiftKey && sender) {
@@ -81,7 +83,8 @@ var AutoSuggest;
             list.style.display = "block";
             list.size = list.options.length < displaycount ? list.options.length : displaycount;
             list.style.display = "block";
-        } else {
+        }
+        else {
             list.style.display = "none";
         }
     }
@@ -105,7 +108,8 @@ var AutoSuggest;
                 key = window.event.keyCode;
                 sender = window.event.srcElement;
                 shiftKey = window.event.shiftKey;
-            } else if (e) {
+            }
+            else if (e) {
                 key = e.which;
                 sender = e.srcElement;
                 shiftKey = e.shiftKey;
@@ -122,23 +126,29 @@ var AutoSuggest;
                         }
                         if (window.event && key == 13) {
                             window.event.returnValue = false;
-                        } else {
-                            return;
+                        }
+                        else {
+                            return; // false;
                         }
                         return;
-                    } else if (key == 38) {
+                    }
+                    else if (key == 38) {
                         if (list.selectedIndex > 0) {
                             list.options[list.selectedIndex - 1].selected = "selected";
-                        } else {
+                        }
+                        else {
                             list.options[0].selected = "selected";
                         }
-                    } else if (key == 40) {
+                    }
+                    else if (key == 40) {
                         if (list.selectedIndex < list.options.length - 1) {
                             list.options[list.selectedIndex + 1].selected = "selected";
-                        } else {
+                        }
+                        else {
                             list.options[0].selected = "selected";
                         }
-                    } else if (key == 8) {
+                    }
+                    else if (key == 8) {
                         onKeyPress(e);
                     }
                 }

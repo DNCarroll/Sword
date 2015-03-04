@@ -11,7 +11,8 @@ HTMLSelectElement.prototype.AddOptions = function (arrayOrObject, valueProperty,
                     select["options"][select.options.length - 1].selected = "true";
                 }
             }
-        } else if (tempArray.length > 1 && Is.String(tempArray[0])) {
+        }
+        else if (tempArray.length > 1 && Is.String(tempArray[0])) {
             for (var i = 0; i < tempArray.length; i++) {
                 var item = tempArray[i];
                 select["options"][select.options.length] = new Option(item, item);
@@ -20,7 +21,8 @@ HTMLSelectElement.prototype.AddOptions = function (arrayOrObject, valueProperty,
                 }
             }
         }
-    } else if (arrayOrObject) {
+    }
+    else if (arrayOrObject) {
         for (var prop in arrayOrObject) {
             if (Is.Function(prop)) {
                 select["options"][select.options.length] = new Option(prop, prop);
@@ -41,7 +43,8 @@ HTMLSelectElement.prototype.AddOptionsViaObject = function (obj, selectedValue, 
                 select["options"][select.options.length - 1].selected = "selected";
             }
         }
-    } else {
+    }
+    else {
         var tempArray = new Array();
         for (var prop in obj) {
             if (Is.Numeric(obj[prop])) {

@@ -96,7 +96,8 @@ namespace Sword
                 {
                     if (command.Connection.State != d.ConnectionState.Open)
                     {
-                        command.Connection.Open();
+                        command.CommandTimeout = Data.Timeout;
+                        command.Connection.Open();                        
                     }
                     command.ExecuteNonQuery();
                     command.Connection.Close();
@@ -484,7 +485,7 @@ namespace Sword
 
 		#region Properties
 
-		private static int m_Timeout = 30;
+		private static int m_Timeout = 15;
 		/// <summary>
 		/// Time in seconds to wait before timeout
 		/// </summary>
@@ -1002,8 +1003,9 @@ namespace Sword
 			var found = cachedCommands.FirstOrDefault(o => o.Item1 == commandText && o.Item2 == connectionString);
 			if (found == null)
 			{
+                connectionString = ConnectionStringTimeout(connectionString);
 				using (var conn = new d.SqlClient.SqlConnection(connectionString))
-				{
+				{   
 					var sqlCommand = new d.SqlClient.SqlCommand
 					{
 						CommandText = commandText,
@@ -2006,6 +2008,15 @@ namespace Sword
 			return sWhere;
 		}
 
+        public static string ConnectionStringTimeout(string connectionString)
+        {
+            if (connectionString.IndexOf("Connection Timeout") == -1 && Data.Timeout != 15)
+            {
+                connectionString += ";Connection Timeout=" + Data.Timeout.ToString();
+            }
+            return connectionString;
+        }
+
 		//order by? 
 		public static List<T> Query<T>(this T obj, Expression<Func<T, bool>> where)
 			where T : DynamicSword, new()
@@ -2017,7 +2028,7 @@ namespace Sword
 				string sWhere = prepWhere(where);
 				if (!string.IsNullOrEmpty(sWhere))
 				{
-					var connString = obj.ObjectConnectionString;
+                    var connString = ConnectionStringTimeout(obj.ObjectConnectionString);
 					if (!string.IsNullOrEmpty(table) && !string.IsNullOrEmpty(connString))
 					{
 						using (d.SqlClient.SqlConnection conn = new d.SqlClient.SqlConnection(connString))
@@ -2060,7 +2071,7 @@ namespace Sword
 				var table = obj.Table;
 				string sTop = "TOP(" + top.ToString() + ")";
 				string sWhere = prepWhere(where);
-				var connString = obj.ObjectConnectionString;
+                var connString = Data.ConnectionStringTimeout(obj.ObjectConnectionString);
 				if (!string.IsNullOrEmpty(table) && !string.IsNullOrEmpty(connString))
 				{
 					using (d.SqlClient.SqlConnection conn = new d.SqlClient.SqlConnection(connString))
@@ -2101,7 +2112,7 @@ namespace Sword
 				string sWhere = prepWhere(where);
 				if (!string.IsNullOrEmpty(sWhere))
 				{
-					var connString = obj.ObjectConnectionString;
+					var connString = Data.ConnectionStringTimeout(obj.ObjectConnectionString);
 					if (!string.IsNullOrEmpty(table) && !string.IsNullOrEmpty(connString))
 					{
 						using (d.SqlClient.SqlConnection conn = new d.SqlClient.SqlConnection(connString))
@@ -2161,7 +2172,7 @@ namespace Sword
 			}
 			output += sWhere;
 
-			var connString = obj.ObjectConnectionString;
+			var connString = Data.ConnectionStringTimeout(obj.ObjectConnectionString);
 			if (!string.IsNullOrEmpty(connString))
 			{
 				using (d.SqlClient.SqlConnection conn = new d.SqlClient.SqlConnection(connString))
