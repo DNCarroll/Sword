@@ -1000,10 +1000,10 @@ namespace Sword
 		//now all object code smithed can point here
 		public static d.SqlClient.SqlCommand GetCommand(this string commandText, string connectionString, d.CommandType commandType = d.CommandType.StoredProcedure)
 		{
+            connectionString = ConnectionStringTimeout(connectionString);
 			var found = cachedCommands.FirstOrDefault(o => o.Item1 == commandText && o.Item2 == connectionString);
 			if (found == null)
-			{
-                connectionString = ConnectionStringTimeout(connectionString);
+			{   
 				using (var conn = new d.SqlClient.SqlConnection(connectionString))
 				{   
 					var sqlCommand = new d.SqlClient.SqlCommand
